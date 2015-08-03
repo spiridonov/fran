@@ -2,14 +2,22 @@
 lock '3.4.0'
 
 set :application, 'fran'
-set :repo_url, 'git@example.com:me/my_repo.git'
+set :repo_url, 'git@github.com:spiridonov/fran.git'
 
-ask :branch, :master
+set :branch, :master
 
 set :deploy_to, '/opt/fran'
 set :scm, :git
 
-set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml')
+set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system', 'public/uploads')
+set :linked_files, fetch(:linked_files, []).push('config/database.yml')
 
-# Default value for linked_dirs is []
-# set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
+namespace :unicorn do
+  task :restart do
+    on roles(:web) do
+      execute "sudo service unicorn restart"
+    end
+  end
+end
+
+after 'deploy:finished', 'unicorn:restart'
