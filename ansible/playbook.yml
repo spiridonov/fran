@@ -23,6 +23,7 @@
   roles:
     - common
     - monit
+    - postgres
     - nginx
     - brightbox-ruby
     - rails_app

@@ -14,22 +14,22 @@
 - apt: pkg=postgresql-contrib
   tags: psql
 
-- postgresql_user: name={{ db_user }} password={{ db_password }}
+- postgresql_user: name={{ db_username }} password={{ db_password }}
   sudo: yes
   sudo_user: '{{ sys_db_user }}'
   tags: psql
 
-- postgresql_db: name='{{ database }}'
+- postgresql_db: name='{{ db_name }}'
   sudo: yes
   sudo_user: postgres
-  when: database is defined
+  when: db_name is defined
   tags: psql
 
 - name: create pg_hba.config
   template: src=etc/postgresql/ver/main/pg_hba.conf.j2
             dest=/etc/postgresql/{{psql_version}}/main/pg_hba.conf
-            owner={{ db_user }}
-            group={{ db_user }}
+            owner={{ db_username }}
+            group={{ db_username }}
             mode=640
   notify: reload postgres
   tags: psql

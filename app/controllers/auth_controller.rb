@@ -5,11 +5,17 @@ class AuthController < ApplicationController
   layout 'sign_in'
 
   def vk_callback
+    if Rails.env.development?
+      redirect_uri = 'http://cf.lvh.me:3000/vk_callback'
+    else
+      redirect_uri = 'http://cfsmr.spiridonov.pro/vk_callback'
+    end
+
     query = {
       client_id: 5012990,
       client_secret: 'l4nroPyYnzXgY59doT6b',
       code: params[:code],
-      redirect_uri: 'http://cf.lvh.me:3000/vk_callback'
+      redirect_uri: redirect_uri
     }
 
     conn = Faraday.new(url: 'https://oauth.vk.com') do |faraday|

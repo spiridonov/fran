@@ -1,7 +1,5 @@
 ---
-db_user: postgres
-db_password: postgres
 sys_db_user: postgres
 psql_version: 9.4
 psql_listen_all: true
-psql_connections: 200
+psql_connections: 50
