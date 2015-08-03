@@ -5,14 +5,8 @@ class AuthController < ApplicationController
   layout 'sign_in'
 
   def vk_callback
-    if Rails.env.development?
-      redirect_uri = 'http://cf.lvh.me:3000/vk_callback'
-    else
-      redirect_uri = 'http://cfsmr.spiridonov.pro/vk_callback'
-    end
-
     query = {
-      client_id: 5012990,
+      client_id: '5012990',
       client_secret: 'l4nroPyYnzXgY59doT6b',
       code: params[:code],
       redirect_uri: redirect_uri
@@ -54,13 +48,33 @@ class AuthController < ApplicationController
   end
 
   def sign_in
-    
+    query = {
+      client_id: '5012990', 
+      redirect_uri: redirect_url,
+      scope: 'friends', 
+      display: 'page', 
+      response_type: 'code', 
+      v: '5.35', 
+      state: 'cfsmr'
+    }.to_query
+
+    @auth_url = "https://oauth.vk.com/authorize?#{query}"      
   end
 
   def sign_out
     current_user_session.destroy
     flash[:notice] = "Logout successful!"
     redirect_to root_path
+  end
+
+  private
+
+  def redirect_url
+    if Rails.env.development?
+      'http://cf.lvh.me:3000/vk_callback'
+    else
+      'http://cfsmr.spiridonov.pro/vk_callback'
+    end
   end
 
 end
