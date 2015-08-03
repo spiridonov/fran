@@ -1,0 +1,42 @@
+upstream unicorn {
+ # This is the socket we configured in unicorn.rb
+ server unix:{{ unicorn.sock_file }}
+ fail_timeout=0;
+}
+
+server {
+  server_name {{ unicorn.server_name }};
+  listen 80;
+
+  # https://www.owasp.org/index.php/List_of_useful_HTTP_headers
+  add_header X-XSS-Protection "1; mode=block";
+  add_header X-Content-Type-Options nosniff;
+  add_header X-Frame-Options SAMEORIGIN;
+  server_tokens off;
+
+  location / {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-INTERNAL FALSE;
+    proxy_redirect off;
+    proxy_read_timeout {{ unicorn.request_timeout }};
+    proxy_http_version 1.1;
+    # If you don't find the filename in the static files
+    # Then request it from the unicorn server
+    if (!-f $request_filename) {
+      proxy_pass http://unicorn;
+      break;
+    }
+  }
+
+  #location ~* \.(js|css|png|jpg|gif)$ {
+  #  if ($query_string ~ "^[0-9]+$") {
+  #    access_log off;
+  #    expires max;
+  #    add_header Cache-Control public;
+  #  }
+  #}
+
+  root {{ current_application_link }}/public;
+  try_files $uri @unicorn;
+}

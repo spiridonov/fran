@@ -1,0 +1,65 @@
+- apt: pkg={{ item }}
+  with_items: [python-pycurl, python-psycopg2]
+  tags: psql
+
+- apt_key: url=http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc
+  tags: psql
+
+- apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_distribution_release}}-pgdg main'
+  tags: psql
+
+- apt: pkg=postgresql-{{psql_version}}
+  tags: psql
+
+- apt: pkg=postgresql-contrib
+  tags: psql
+
+- postgresql_user: name={{ db_user }} password={{ db_password }}
+  sudo: yes
+  sudo_user: '{{ sys_db_user }}'
+  tags: psql
+
+- postgresql_db: name='{{ database }}'
+  sudo: yes
+  sudo_user: postgres
+  when: database is defined
+  tags: psql
+
+- name: create pg_hba.config
+  template: src=etc/postgresql/ver/main/pg_hba.conf.j2
+            dest=/etc/postgresql/{{psql_version}}/main/pg_hba.conf
+            owner={{ db_user }}
+            group={{ db_user }}
+            mode=640
+  notify: reload postgres
+  tags: psql
+
+- name: pgtune dependencies
+  apt: name={{ item }} state=present
+  with_items:
+    - pgtune
+  tags: psql
+
+- set_fact: psql_conf_file=/etc/postgresql/{{psql_version}}/main/postgresql.conf
+  tags: psql
+
+- name: run pgtune
+  command: pgtune -i {{ psql_conf_file }} -o {{ psql_conf_file }}.pgtune -c {{psql_connections}}
+  args:
+    creates: /etc/postgresql/{{psql_version}}/main/postgresql.conf.pgtune
+  register: pgtune_result
+  tags: psql
+
+- name: copy pgtune conf file
+  shell: cp {{ psql_conf_file }}.pgtune {{ psql_conf_file }}
+  when: pgtune_result|changed
+  notify: reload postgres
+  tags: psql
+
+- set_fact: psql_pid=/var/run/postgresql/{{psql_version}}-main.pid
+  tags: psql
+
+- name: create monit psql conf
+  template: src=etc/monit/conf.d/postgresql.conf.j2 dest=/etc/monit/conf.d/postgresql.conf
+  notify: reload monit
+  tags: psql

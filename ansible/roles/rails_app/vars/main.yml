@@ -1,0 +1,15 @@
+---
+shared_sub_dirs:
+  - tmp
+  - tmp/pids
+  - tmp/sockets
+  - tmp/cache
+  - log
+  - public
+  - public/system
+  - public/uploads
+  - public/assets
+  - config
+shared_app_dirs:
+  - bundle
+  

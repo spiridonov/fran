@@ -1,0 +1,38 @@
+h1.text-center
+  | Тренировки
+  =< @week.start_date.strftime("%d/%m")
+  | –
+  =< @week.end_date.strftime("%d/%m")
+
+nav
+  ul class="pager"
+    li class="previous"
+      = link_to admin_workouts_path(start_date: @week.start_date - 7.days) do
+        | &larr;
+        =< (@week.start_date - 7.days).strftime("%d/%m")
+        | –
+        = (@week.start_date - 1.days).strftime("%d/%m")
+    li class="next"
+      = link_to admin_workouts_path(start_date: @week.start_date + 7.days) do
+        = (@week.end_date + 1.days).strftime("%d/%m")
+        | –
+        => (@week.end_date + 7.days).strftime("%d/%m")
+        span< aria-hidden="true" &rarr;
+
+.row
+  - (1..7).to_a.each do |d|
+    - date = @week.start_date + (d - 1).day
+    .col-md-1
+      p
+        strong = week_day(d)
+        =< date.strftime("%d/%m")
+      - @week.workouts_for(d).each do |workout|
+        = link_to admin_workout_path(workout), class: "btn btn-default btn-block" do
+          => workout.datetime.strftime("%H:%M")
+          span class="badge" = workout.users.count
+        br
+
+      - if WorkoutService.can_add_workout?(date)
+        = link_to new_admin_workout_path(date: date), class: "btn btn-success btn-block" do
+          span class="glyphicon glyphicon-plus"
+        br

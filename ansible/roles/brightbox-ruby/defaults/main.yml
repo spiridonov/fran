@@ -1,0 +1,9 @@
+---
+ruby_version: 2.1
+brightbox_ruby_packages:
+  - ruby{{ ruby_version }}
+  - ruby{{ ruby_version }}-dev
+  - ruby-switch
+brightbox_ruby_gem_user_install: no
+brightbox_ruby_gems:
+  - bundler

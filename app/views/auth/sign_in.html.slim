@@ -1,0 +1,17 @@
+.site-wrapper
+  .site-wrapper-inner
+    .cover-container
+      .inner.cover
+        h1
+          | CrossFit SMR
+          =< image_tag "reebok_symbol.png", size: '50x50', class: 'brand-logo'
+
+        p
+          | Привет, кроссфиттер! Здесь можно записаться на тренировку и не только;)
+
+        br
+
+        p
+          - query = {client_id: '5012990', redirect_uri: 'http://cf.lvh.me:3000/vk_callback', scope: 'friends', display: 'page', response_type: 'code', v: '5.35', state: 'cfsmr'}.to_query
+          - url = "https://oauth.vk.com/authorize?#{query}"
+          = link_to 'Войти через VK', url, class: 'btn btn-lg btn-primary'

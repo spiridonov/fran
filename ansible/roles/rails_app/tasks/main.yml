@@ -1,0 +1,37 @@
+---
+- name: packages for rails
+  apt: pkg={{item}}
+  with_items:
+    - libpq-dev
+    - libxml2-dev
+    - libxslt-dev
+    - libcurl4-gnutls-dev
+    - nodejs
+    - imagemagick
+
+- name: create shared directory
+  file: path={{ shared_path }}
+        owner={{ app_user }}
+        group={{ app_user }}
+        state=directory
+  tags: checkout
+
+- name: create shared sub dirs
+  file: path={{ shared_path + '/' + item }}
+        owner={{ web_user }}
+        group={{ app_user }}
+        mode=0775
+        state=directory
+  with_items: shared_sub_dirs
+  tags: checkout
+
+- name: create shared app dirs
+  file: path={{ shared_path + '/' + item }}
+        owner={{ app_user }}
+        group={{ app_user }}
+        state=directory
+  with_items: shared_app_dirs
+  tags: checkout
+
+- name: create database.yml from template
+  template: src=database.yml.j2 dest={{ shared_database_yml }} owner={{ app_user }} group={{ app_user }}

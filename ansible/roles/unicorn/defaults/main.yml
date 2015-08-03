@@ -1,0 +1,27 @@
+---
+unicorn:
+  environment: '{{ env }}'
+  force_ssl: true
+  ssl: true
+  request_timeout: 60
+  tmp_dir: '{{ shared_path }}/tmp/'
+  log_dir: '{{ shared_path }}/log'
+  log_file: '{{ shared_path }}/log/unicorn.log'
+  pid_dir: '{{ shared_path }}/pids'
+  pid_file: '{{ shared_path }}/pids/unicorn.pid'
+  socket_dir: '{{ shared_path }}/tmp/sockets'
+  sock_file: '{{ shared_path }}/tmp/sockets/unicorn.sock'
+  rails_env: '{{ env }}'
+
+  worker_processes: '{{ ansible_processor_vcpus }}'
+  request_timeout: 60
+  worker_user: '{{ web_user }}'
+  worker_group: '{{ web_user }}'
+
+  before_fork: |
+    ActiveRecord::Base.connection.disconnect! if defined?(ActiveRecord::Base)
+
+  after_fork: |
+    ActiveRecord::Base.establish_connection if defined?(ActiveRecord::Base)
+
+  server_name: _

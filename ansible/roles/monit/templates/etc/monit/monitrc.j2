@@ -1,0 +1,30 @@
+set daemon {{ monit.poll_period }}
+{% if monit.poll_start_delay %}
+  with start delay {{ monit.poll_start_delay }}
+{% endif %}
+
+set logfile /var/log/monit.log
+
+set mailserver localhost
+
+#set mailserver smtp.gmail.com port 587
+#    username "someuser@gmail.com" password "password"
+#    using tlsv1
+#    with timeout 30 seconds
+
+set eventqueue
+    basedir /var/monit  # set the base directory where events will be stored
+#    slots 1000          # optionaly limit the queue size
+
+set mail-format { 
+  from: {{ monit.mail_format.from }}
+  subject: {{ monit.mail_format.subject }}
+  message: {{ monit.mail_format.message }}
+}
+
+set alert {{ monit.notify_email }} NOT ON { action, instance, pid, ppid }
+
+set httpd port 3737
+  allow 0.0.0.0/0
+
+include /etc/monit/conf.d/*.conf

@@ -1,0 +1,16 @@
+unicorn:
+  server_name: cfsmr.spiridonov.pro
+
+env: production
+deployment_parent_dir: /opt
+root_path: "{{ deployment_parent_dir }}/fran"
+releases_path: "{{ root_path }}/releases"
+current_release_link: '{{ root_path + "/current" }}'
+current_application_link: '{{ current_release_link }}'
+shared_path: "{{ root_path}}/shared"
+db_username: postgres
+db_password: postgres
+shared_database_yml: '{{ shared_path + "/config/database.yml" }}'
+sys_user: root
+web_user: www-data
+app_user: "{{ ansible_ssh_user }}"

@@ -1,0 +1,34 @@
+---
+- name: create socket, pids, logs dirs
+  file: name={{ item }} state=directory mode=0775 owner={{ web_user }} group={{ app_user }}
+  with_items:
+    - '{{ unicorn.tmp_dir }}'
+    - '{{ unicorn.socket_dir }}'
+    - '{{ unicorn.pid_dir }}'
+    - '{{ unicorn.log_dir }}'
+  tags: unicorn
+
+- name: create unicorn init.d script
+  template: src=etc/init.d/unicorn.j2 dest=/etc/init.d/unicorn mode=0755
+  tags: unicorn
+
+  #TODO restart unicorn if needed
+
+- name: create unicorn.rb script
+  template: src=unicorn.rb.j2 dest={{ shared_path }}/unicorn.rb mode=0644
+  # notify: restart unicorn
+  tags: unicorn
+
+- name: create nginx site configuration
+  template: src=etc/nginx/site-conf.j2 dest=/etc/nginx/sites-available/cloudlogistics
+  sudo: yes
+  tags: unicorn
+
+- file: path=/etc/nginx/sites-enabled/cloudlogistics src=/etc/nginx/sites-available/cloudlogistics state=link
+  notify: restart nginx
+  tags: unicorn
+
+- name: create unicorn conf file
+  template: src=etc/monit/conf.d/unicorn.conf.j2 dest=/etc/monit/conf.d/unicorn.conf
+  notify: reload monit
+  tags: unicorn

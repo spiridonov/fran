@@ -1,0 +1,42 @@
+worker_processes  {{ unicorn.worker_processes }}
+
+timeout {{ unicorn.request_timeout }}
+
+user "{{ unicorn.worker_user }}",
+     "{{ unicorn.worker_group }}"
+
+listen "{{ unicorn.sock_file }}"
+pid "{{ unicorn.pid_file }}"
+
+working_directory File.path("{{ current_application_link }}")
+
+stderr_path "{{ unicorn.log_file }}"
+stdout_path "{{ unicorn.log_file }}"
+
+preload_app true
+GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=)
+
+before_exec do |server|
+    ENV['BUNDLE_GEMFILE'] = '{{ current_application_link }}/Gemfile'
+end
+
+before_fork do |server, worker|
+  old_pid = "#{server.config[:pid]}.oldbin"
+  if File.exists?(old_pid) && server.pid != old_pid
+    begin
+      Process.kill(:QUIT, File.read(old_pid).to_i)
+    rescue Errno::ENOENT, Errno::ESRCH => e
+        p e
+      # someone else did our job for us
+    end
+  end
+  # Application-specific
+  {{ unicorn.before_fork }}
+end
+
+after_fork do |server, worker|
+  child_pid = server.config[:pid].sub('.pid', ".#{worker.nr}.pid")
+  system("echo #{Process.pid} > #{child_pid}")
+  # Application-specific
+  {{ unicorn.after_fork }}  
+end

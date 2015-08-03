@@ -1,0 +1,17 @@
+--- 
+- name: install monit package
+  apt: name=monit state=present
+  tags: monit
+
+- name: copy monitrc 
+  template: src=etc/monit/monitrc.j2 dest=/etc/monit/monitrc mode=0700
+  notify: reload monit
+  tags: monit
+
+- name: create monit ssh conf
+  template: src=etc/monit/conf.d/ssh.conf.j2 dest=/etc/monit/conf.d/ssh.conf
+  notify: reload monit
+  tags: monit
+
+- name: restart monit
+  service: name=monit state=restarted

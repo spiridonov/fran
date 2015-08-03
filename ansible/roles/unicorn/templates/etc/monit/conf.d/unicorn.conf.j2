@@ -1,0 +1,16 @@
+check process unicorn
+  with pidfile {{ shared_path }}/pids/unicorn.pid
+  start program "/usr/sbin/service unicorn start"
+  stop program "/usr/sbin/service unicorn stop"
+  group unicorn
+
+# {{ unicorn.worker_processes }} workers configs:
+{% for id in range(0, unicorn.worker_processes|int) %}
+check process unicorn-worker-{{ id }}
+  with pidfile {{ shared_path }}/pids/unicorn.{{ id }}.pid
+  start program = "/bin/true"
+  stop program = "/bin/sh -c 'kill `cat {{ shared_path }}/pids/unicorn.{{ id }}.pid`'"
+  if mem is greater than 200.0 MB for 1 cycles then restart
+  if cpu is greater than 50% for 5 cycles then restart
+  group unicorn
+{% endfor %}

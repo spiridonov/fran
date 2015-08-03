@@ -1,0 +1,22 @@
+- name: add Brightbox repository
+  apt_repository:
+    repo: ppa:brightbox/ruby-ng
+    update_cache: yes
+  tags: package
+
+- name: install Brightbox Ruby package
+  apt:
+    pkg: '{{ item }}'
+    state: installed
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: brightbox_ruby_packages
+  tags: package
+
+- name: install gems
+  gem:
+    name: '{{ item }}'
+    state: present
+    user_install: '{{ brightbox_ruby_gem_user_install }}'
+  with_items: brightbox_ruby_gems
+  tags: rubygems

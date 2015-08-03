@@ -1,0 +1,2 @@
+[web]
+cfsmr.spiridonov.pro ansible_ssh_user=root

@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    title CrossFit SMR
+    = stylesheet_link_tag 'application', media: 'all'
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+  body
+    nav class="navbar navbar-default navbar-static-top" role="navigation"
+      .container
+        .navbar-header
+          .navbar-brand
+            | CrossFit SMR
+            =< image_tag "reebok_symbol.png", size: '30x30', class: 'pull-right brand-logo'
+        ul class="nav navbar-nav navbar-right"
+          li
+            = link_to workouts_path do
+              span> class="glyphicon glyphicon-list"
+              | Расписание
+          li
+            = link_to auth_sign_out_path, method: :post do
+              span> class="glyphicon glyphicon-log-out"
+              | Выйти
+    .container
+      = yield

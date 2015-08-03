@@ -1,0 +1,8 @@
+---
+- name: create app logrotate config
+  template: src=etc/logrotate.d/logrotate.conf.j2 
+            dest=/etc/logrotate.d/fran.conf 
+            owner={{ sys_user }} 
+            group={{ sys_user }} 
+            mode=0644
+  tags: logrotate

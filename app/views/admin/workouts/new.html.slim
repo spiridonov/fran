@@ -1,0 +1,37 @@
+.row
+  .col-md-5.col-md-offset-1
+
+    h1.text-center
+      | Новая тренировка
+      =<> @workout.date.strftime("%d/%m")
+      = week_day(@workout.date.wday == 0 ? 7 : @workout.date.wday)
+
+    br
+
+    javascript:
+      var calendar = $("#calendar").calendar(
+        {
+            tmpl_path: "/tmpls/",
+            events_source: function () { return []; }
+        });     
+
+    = form_for @workout, as: :workout, url: admin_workouts_path, method: :post, html: {class: "form-horizontal"} do |f|
+      = f.hidden_field :date
+
+      .form-group
+        .col-sm-7
+          .form-group
+            = f.label :time, "Время", class: "col-sm-1"
+            .col-sm-6
+              - collection = (6..23).to_a.map{ |i| ["#{i.to_s.rjust(2, '0')}:00", i] }
+              = f.select :time, collection, {include_blank: false}, {class: "form-control"}
+
+          .form-group
+            = f.label :description, "Описание", class: "col-sm-1"
+            .col-sm-6
+              = f.text_field :description, class: "form-control"
+
+      br
+      .form-group
+        .col-sm-7
+          = f.submit "Создать", class: "btn btn-success pull-right"

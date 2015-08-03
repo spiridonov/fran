@@ -1,0 +1,57 @@
+.row
+  .col-md-5.col-md-offset-1
+
+
+    h1.text-center
+      | Тренировка
+      =< @workout.datetime.strftime("%H:%M")
+      =< week_day(@workout.datetime.wday == 0 ? 7 : @workout.datetime.wday)
+      =< @workout.datetime.strftime("%d/%m")
+
+    - if @workout.description.present?
+      blockquote
+        p = @workout.description
+
+    - if @workout.program.present?
+      pre
+        = @workout.program
+
+    hr
+
+    - if @workout.users.present?
+
+      - if WorkoutService.can_anybody_take_part?(@workout)
+        - if @workout.users.include?(current_user)
+          = link_to "Я не пойду!", will_not_go_workout_path(@workout), method: :post, class: 'btn btn-lg btn-danger'
+        - else
+          - if WorkoutService.can_go?(@workout, current_user)
+            = link_to "Я пойду!", will_go_workout_path(@workout), method: :post, class: 'btn btn-lg btn-success'
+          - else
+            italic Вы уже записаны на этот день в другое время!
+
+      h2.text-center Атлеты
+
+      .table-responsive  
+        table.table
+          tbody
+            - ids = @workout.users.map(&:vk_id)
+            - vk_result = Array.wrap(VK::Application.new(version: '5.35').vk_call('users.get', {user_ids: ids, fields: 'photo_50'}))
+            - @workout.users.each do |user|
+              tr
+                td
+                  => image_tag vk_result.find{ |r| r['id'].to_s == user.vk_id }['photo_50'], size: '50x50', class: 'img-circle'
+                  => vk_url_with_name(user)
+    - else
+      - if WorkoutService.can_anybody_take_part?(@workout)
+        .jumbotron
+          h1 Атлеты
+          p Никто еще не записался на эту тренирку...
+          - if WorkoutService.can_go?(@workout, current_user)
+            p
+              = link_to "Я пойду!", will_go_workout_path(@workout), method: :post, class: 'btn btn-lg btn-success'
+          - else
+            italic А вы уже записаны на этот день в другое время!
+      - else
+        .jumbotron
+          h1 Атлеты
+          p Никто не пришел на эту тренирку...
