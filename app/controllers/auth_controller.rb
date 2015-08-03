@@ -50,7 +50,7 @@ class AuthController < ApplicationController
   def sign_in
     query = {
       client_id: '5012990', 
-      redirect_uri: redirect_url,
+      redirect_uri: redirect_uri,
       scope: 'friends', 
       display: 'page', 
       response_type: 'code', 
@@ -69,7 +69,7 @@ class AuthController < ApplicationController
 
   private
 
-  def redirect_url
+  def redirect_uri
     if Rails.env.development?
       'http://cf.lvh.me:3000/vk_callback'
     else
