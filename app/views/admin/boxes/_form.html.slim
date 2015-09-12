@@ -1,0 +1,14 @@
+.form-group
+  = f.label :name, "Название", class: "col-sm-2"
+  .col-sm-5
+    = f.text_field :name, class: "form-control"
+
+.form-group
+  = f.label :address, "Адрес", class: "col-sm-2"
+  .col-sm-5
+    = f.text_field :address, class: "form-control"
+
+.form-group
+  = f.label :default_cap, "Ограничение (чел.)", class: "col-sm-2"
+  .col-sm-2
+    = f.number_field :default_cap, class: "form-control"

@@ -4,12 +4,43 @@ class AuthController < ApplicationController
 
   layout 'sign_in'
 
+  def fb_callback
+    koala = Koala::Facebook::OAuth.new(
+      '448225325365100', 'b8f0521ab17603db9e50fa51d9d3bdcf', fb_redirect_uri
+    )
+    fb_token = koala.get_access_token(params[:code])
+    
+    if fb_token.present?
+      koala = Koala::Facebook::API.new(fb_token)      
+      me = koala.get_object("me")
+      
+      user = User.where(fb_id: me["id"]).first
+      if user.present?
+        user.fb_token = fb_token
+        user.save!
+      else
+        user = User.create!(
+          fb_id: me["id"],
+          name: me["name"],
+          fb_token: fb_token,
+          invited_by_id: session[:referral_id],
+        )
+      end
+
+      UserSession.create(user, true)
+    else
+
+    end
+
+    redirect_to root_path
+  end
+
   def vk_callback
     query = {
       client_id: '5012990',
       client_secret: 'l4nroPyYnzXgY59doT6b',
       code: params[:code],
-      redirect_uri: redirect_uri
+      redirect_uri: vk_redirect_uri
     }
 
     conn = Faraday.new(url: 'https://oauth.vk.com') do |faraday|
@@ -33,9 +64,9 @@ class AuthController < ApplicationController
 
         user = User.create!(
           vk_id: vk_result['id'],
-          first_name: vk_result['first_name'],
-          last_name: vk_result['last_name'],
+          name: "#{vk_result['first_name']} #{vk_result['last_name']}",
           vk_token: vk_token,
+          invited_by_id: session[:referral_id],
         )
       end
 
@@ -48,17 +79,8 @@ class AuthController < ApplicationController
   end
 
   def sign_in
-    query = {
-      client_id: '5012990', 
-      redirect_uri: redirect_uri,
-      scope: 'friends', 
-      display: 'page', 
-      response_type: 'code', 
-      v: '5.35', 
-      state: 'cfsmr'
-    }.to_query
-
-    @auth_url = "https://oauth.vk.com/authorize?#{query}"      
+    @vk_auth_url = vk_auth_url
+    @fb_auth_url = fb_auth_url
   end
 
   def sign_out
@@ -69,12 +91,41 @@ class AuthController < ApplicationController
 
   private
 
-  def redirect_uri
+  def fb_auth_url
+    koala = Koala::Facebook::OAuth.new(
+      '448225325365100', 'b8f0521ab17603db9e50fa51d9d3bdcf', fb_redirect_uri
+    )
+    koala.url_for_oauth_code
+  end
+
+  def vk_auth_url
+    query = {
+      client_id: '5012990', 
+      redirect_uri: vk_redirect_uri,
+      scope: 'friends', 
+      display: 'page', 
+      response_type: 'code', 
+      v: '5.37', 
+      state: 'cfsmr'
+    }.to_query
+
+    "https://oauth.vk.com/authorize?#{query}"
+  end
+
+  def redirect_host
     if Rails.env.development?
-      'http://cf.lvh.me:3000/vk_callback'
+      'http://cf.lvh.me:3000'
     else
-      'http://cfsmr.spiridonov.pro/vk_callback'
+      'http://cfsmr.spiridonov.pro'
     end
+  end
+
+  def vk_redirect_uri
+    "#{redirect_host}/vk_callback"
+  end
+
+  def fb_redirect_uri
+    "#{redirect_host}/fb_callback"
   end
 
 end

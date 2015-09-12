@@ -5,8 +5,7 @@ class Admin::UsersController < Admin::BaseController
   def index
     @users = User.all
     if params[:search]
-      @users = @users.where('first_name ILIKE ? OR last_name ILIKE ?', 
-        "#{params[:search]}%", "#{params[:search]}%")
+      @users = @users.where('name ILIKE ?', "%#{params[:search]}%")
     end
 
     # @users = @users.paginate(page: params[:page], per_page: 20).order('id DESC')
@@ -39,18 +38,6 @@ class Admin::UsersController < Admin::BaseController
   #     render 'edit'
   #   end
   # end
-
-  def buy_subscription
-    User.transaction do
-      tariff = Tariff.find(params[:tariff_id])
-      user = User.find(params[:id])
-      if user.virtual_coins >= tariff.virtual_coins
-        SubscriptionService.new(user).prolong(tariff.months)
-        CoinsService.new(user).take_coins_for_subscription(tariff.virtual_coins)
-      end
-      redirect_to admin_user_path(user)
-    end
-  end
 
   # def create
   #   @user = User.new(user_params)

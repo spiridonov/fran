@@ -11,7 +11,7 @@ class Admin::WorkoutsController < Admin::BaseController
     workouts = Workout.
       where('datetime >= ?', start_date).
       where('datetime <= ?', end_date).
-      includes(:users).
+      includes(:users, :box).
       all
     @week = Week.new(start_date, workouts)
   end
@@ -21,8 +21,7 @@ class Admin::WorkoutsController < Admin::BaseController
   end
 
   def new
-    @workout = WorkoutForm.new
-    @workout.date = Date.parse(params[:date])
+    @workout = WorkoutForm.build(params)
   end
 
   def destroy
@@ -55,13 +54,17 @@ class Admin::WorkoutsController < Admin::BaseController
     end
   end
 
+  def remove_user_workout
+    
+  end
+
   private
 
   def workout_params
     params.
       require(:workout).
       permit(
-        :program, :description, :date, :time
+        :program, :description, :date, :time, :box_id, :cap
       )
   end
 

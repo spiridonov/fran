@@ -1,0 +1,74 @@
+- user_workouts = @user.user_workouts.sort_by { |w| w.workout.datetime }.reverse
+
+.row
+  .col-md-5.col-md-offset-1
+
+
+    h1.text-center = @user.name
+
+    br
+
+    .row
+      .col-md-2    
+        - user_photos = UserPhotosService.new(@user)
+        => image_tag user_photos.for(@user, :large), size: '200x200', class: 'img-circle'
+      .col-md-5
+        dl.dl-horizontal
+          dt Соцсеть
+          dd = social_url(@user)
+        dl.dl-horizontal
+          dt Последний раз был
+          dd
+            - last = user_workouts.find{ |w| w.workout.datetime.to_date < Date.today }
+            - if last.present?
+              = "#{(Date.today - last.workout.datetime.to_date).to_i} дн. назад"
+        dl.dl-horizontal
+          dt Обещал и не пришел
+          dd = @user.user_workouts.select{ |w| !w.visited }.size
+
+    h2.text-center Рассказать друзьям
+
+    - share_service = ShareService.new(@user)
+    .row
+      .col-md-5.col-md-offset-2
+        dl.dl-horizontal
+          dt Расшариваний
+          dd = share_service.shares_count
+        dl.dl-horizontal
+          dt Переходов
+          dd = share_service.clicks_count
+        dl.dl-horizontal
+          dt Живых записей
+          dd
+            ul
+              - share_service.wall_posts.each do |post|
+                li
+                  => post[:datetime].strftime("%d.%m.%Y")
+                  span class="glyphicon glyphicon-heart"
+                  =<> post[:likes]
+                  span class="glyphicon glyphicon-bullhorn"
+                  =<> post[:reposts]
+                  span class="glyphicon glyphicon-comment"
+                  =< post[:comments]
+
+        dl.dl-horizontal
+          dt Новых регистраций
+          dd = share_service.invited_users_count
+
+    h2.text-center Тренировки
+
+    table class="table"
+      thead
+        th Дата
+        th 
+
+      tbody
+        - user_workouts.each do |user_workout|
+          - workout = user_workout.workout
+          tr
+            td
+              = link_to admin_workout_path(workout) do 
+                =< workout.datetime.strftime("%H:%M")
+                =< week_day(workout.datetime.wday == 0 ? 7 : workout.datetime.wday)
+                =< workout.datetime.strftime("%d/%m")
+            td

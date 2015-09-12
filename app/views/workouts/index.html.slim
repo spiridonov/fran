@@ -9,26 +9,32 @@ nav
     li class="previous"
       = link_to workouts_path(start_date: @week.start_date - 7.days) do
         | &larr;
-        =< (@week.start_date - 7.days).strftime("%d/%m")
+        =<> (@week.start_date - 7.days).strftime("%d/%m")
         | –
-        = (@week.start_date - 1.days).strftime("%d/%m")
+        =< (@week.start_date - 1.days).strftime("%d/%m")
     li class="next"
       = link_to workouts_path(start_date: @week.start_date + 7.days) do
-        = (@week.end_date + 1.days).strftime("%d/%m")
+        => (@week.end_date + 1.days).strftime("%d/%m")
         | –
-        => (@week.end_date + 7.days).strftime("%d/%m")
+        =<> (@week.end_date + 7.days).strftime("%d/%m")
         span< aria-hidden="true" &rarr;
 
-.row
-  - (1..7).to_a.each do |d|
-    - date = @week.start_date + (d - 1).day
-    .col-md-1
-      p
-        strong = week_day(d)
-        =< date.strftime("%d/%m")
-      - @week.workouts_for(d).each do |workout|
-        - btn_class = workout.users.include?(current_user) ? 'btn-success' : 'btn-default'
-        = link_to workout_path(workout), class: "btn #{btn_class} btn-block" do
-          => workout.datetime.strftime("%H:%M")
-          span class="badge" = workout.users.size
-        br
+- Box.all.each do |box|
+  hr
+  h2
+    => box.name
+    small = box.address
+  br
+  .row
+    - (1..7).to_a.each do |d|
+      - date = @week.start_date + (d - 1).day
+      .col-md-1
+        p class=(Date.today == date ? 'danger' : '')
+          strong = week_day(d)
+          =< date.strftime("%d/%m")
+        - @week.workouts_for(box, d).each do |workout|
+          - btn_class = workout.users.include?(current_user) ? 'btn-success' : 'btn-default'
+          = link_to workout_path(workout), class: "btn #{btn_class} btn-block" do
+            => workout.datetime.strftime("%H:%M")
+            span class="badge" = workout.users.size
+          br

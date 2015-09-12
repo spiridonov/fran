@@ -1,28 +1,33 @@
-h1 Атлеты
+.row
+  .col-md-5.col-md-offset-1
 
-p
-  .row
-    form class="navbar-form navbar-right" role="search" method='get' action=admin_users_path
-      .form-group
-        input<> type="text" class="form-control" placeholder="Поиск..." name='search' value=params[:search]
-        button type='submit' class='btn btn-primary' Поиск
+    h1.text-center Атлеты
+
+    p
+      .row
+        form class="navbar-form navbar-right" role="search" method='get' action=admin_users_path
+          .form-group
+            input<> type="text" class="form-control" placeholder="Поиск..." name='search' value=params[:search]
+            button type='submit' class='btn btn-primary' Поиск
 
 
-table class="table"
-  thead
-    th Имя
-    th VK
+    - if @users.present?
+      table class="table"
+        thead
+          th Имя
+          th Соцсеть
 
-  tbody
-    - ids = @users.map(&:vk_id)
-    - vk_result = Array.wrap(VK::Application.new(version: '5.35').vk_call('users.get', {user_ids: ids, fields: 'photo_50'}))
-    - @users.each do |user|
-      tr
-        td
-          => image_tag vk_result.find{ |r| r['id'].to_s == user.vk_id }['photo_50'], size: '50x50', class: 'img-circle'
-          => link_to user.name, admin_user_path(user)
-        td = vk_url(user)
+        tbody
+          - user_photos = UserPhotosService.new(@users)
+          - @users.each do |user|
+            tr
+              td
+                => image_tag user_photos.for(user, :small), size: '50x50', class: 'img-circle'
+                => link_to user.name, admin_user_path(user)
+              td = social_url(user)
 
-hr
+      hr
+    - else
+      em Атлеты не найдены
 
-/ = will_paginate @users, renderer: BootstrapPagination::Rails, previous_label: "←", next_label: "→"
+    / = will_paginate @users, renderer: BootstrapPagination::Rails, previous_label: "←", next_label: "→"

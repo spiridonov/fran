@@ -13,14 +13,19 @@
     = form_for @workout, url: admin_workout_path(@workout), method: :put, html: {class: "form-horizontal"} do |f|
 
       .form-group
-        = f.label :description, "Описание", class: "col-sm-1"
-        .col-sm-6
+        = f.label :description, "Описание", class: "col-sm-2"
+        .col-sm-5
           = f.text_field :description, class: "form-control"
 
       .form-group
-        = f.label :program, "Программа", class: "col-sm-1"
-        .col-sm-6
-          = f.text_area :program, class: "form-control", 'data-provide' => 'markdown', 'data-language' => 'ru', 'rows' => '15'
+        = f.label :cap, "Ограничение (чел.)", class: "col-sm-2"
+        .col-sm-2
+          = f.number_field :cap, class: "form-control"
+
+      .form-group
+        = f.label :program, "Программа", class: "col-sm-2"
+        .col-sm-5
+          = f.text_area :program, class: "form-control", 'data-provide' => 'markdown', 'data-language' => 'ru', 'rows' => '12'
       
       .form-group
         .col-sm-7
@@ -28,28 +33,27 @@
 
     hr
 
-    h2.text-center Атлеты
+    h2.text-center = "Атлеты (#{@workout.user_workouts.size})"
 
-    .table-responsive  
-      table.table
-        tbody
-          - if @workout.user_workouts.present?
-            - ids = @workout.users.map(&:vk_id)
-            - vk_result = Array.wrap(VK::Application.new(version: '5.35').vk_call('users.get', {user_ids: ids, fields: 'photo_50'}))
+    - if @workout.user_workouts.present?
+      .table-responsive  
+        table.table
+          tbody
+            - user_photos = UserPhotosService.new(@workout.users)
             - @workout.user_workouts.each do |user_workout|
               tr
                 td
-                  => image_tag vk_result.find{ |r| r['id'].to_s == user_workout.user.vk_id }['photo_50'], size: '50x50', class: 'img-circle'
+                  => image_tag user_photos.for(user_workout.user, :small), size: '50x50', class: 'img-circle'
                   => link_to user_workout.user.name, admin_user_path(user_workout.user)
                 td
-                  - if WorkoutService.can_mark_absent_users?(@workout)
+                  .pull-right
+                    / - if WorkoutService.can_mark_absent_users?(@workout)
+                    => link_to "Удалить", "#", class: 'btn btn-sm btn-danger'
                     - if user_workout.visited
-                      = link_to "Пришел", "#", class: 'btn btn-sm btn-success pull-right'
+                      = link_to "Пришел", "#", class: 'btn btn-sm btn-success disabled'
                     - else
-                      = link_to "Не пришел", "#", class: 'btn btn-sm btn-danger pull-right'
+                      = link_to "Не пришел", "#", class: 'btn btn-sm btn-danger'
 
     hr
 
     = link_to "Удалить тренировку", admin_workout_path(@workout), method: :delete, class: 'btn btn-danger pull-right'
-
-    br

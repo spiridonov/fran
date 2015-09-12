@@ -14,14 +14,18 @@ html
             | CrossFit SMR
             =< image_tag "reebok_symbol.png", size: '30x30', class: 'pull-right brand-logo'
         ul class="nav navbar-nav navbar-right"
-          li
+          li class=(params[:controller] == 'admin/users' ? 'active' : nil)
             = link_to admin_users_path do
               span> class="glyphicon glyphicon-user"
               | Атлеты
-          li
+          li class=(params[:controller] == 'admin/workouts' ? 'active' : nil)
             = link_to admin_workouts_path do
               span> class="glyphicon glyphicon-list"
               | Тренировки
+          li class=(params[:controller] == 'admin/boxes' ? 'active' : nil)
+            = link_to admin_boxes_path do
+              span> class="glyphicon glyphicon-home"
+              | Боксы
           li
             = link_to auth_sign_out_path, method: :post do
               span> class="glyphicon glyphicon-log-out"

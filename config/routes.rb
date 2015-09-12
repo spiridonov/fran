@@ -3,9 +3,13 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :users
+    resources :user_workouts, only: [:destroy, :create] do
+      post :mark_as_visited, on: :member
+      post :mark_as_not_visited, on: :member
+    end
     resources :workouts
-    resources :boxes
     resources :schedules
+    resources :boxes
   end
 
   resources :workouts do
@@ -14,6 +18,7 @@ Rails.application.routes.draw do
   end
 
   get 'vk_callback', to: 'auth#vk_callback'
+  get 'fb_callback', to: 'auth#fb_callback'
   post 'auth/sign_out', to: 'auth#sign_out'
   get 'auth/sign_in', to: 'auth#sign_in'
 

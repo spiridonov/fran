@@ -23,7 +23,12 @@ class WorkoutsController < ApplicationController
   def will_go
     workout = Workout.find(params[:id])
 
-    unless workout.users.include?(current_user)
+    if !workout.users.include?(current_user) && WorkoutService.can_anybody_take_part?(workout)
+      current_user.user_workouts.
+      joins(:workout).
+      where('workouts.datetime::date = ?', workout.datetime.to_date).
+      delete_all
+
       workout.user_workouts.create(user: current_user)
     end
 

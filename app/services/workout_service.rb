@@ -11,10 +11,11 @@ module WorkoutService
   end
 
   def can_anybody_take_part?(workout)
-    workout.datetime.to_date >= Date.today
+    workout.datetime.to_date >= Date.today &&
+      workout.cap > workout.user_workouts.count
   end
 
-  def can_go?(workout, user)
+  def user_free_to_go_to?(workout, user)
     !user.user_workouts.
       joins(:workout).
       where('workouts.datetime::date = ?', workout.datetime.to_date).

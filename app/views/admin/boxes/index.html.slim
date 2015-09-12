@@ -1,0 +1,20 @@
+.row
+  .col-md-5.col-md-offset-1
+
+    h1.text-center Боксы
+
+    p
+      = link_to "Создать", new_admin_box_path, class: 'btn btn-success'
+
+    table class="table"
+      thead
+        th Название
+        th Адрес
+        th Ограничение по умолчанию (чел.)
+
+      tbody
+        - @boxes.each do |box|
+          tr
+            td => link_to box.name, edit_admin_box_path(box)
+            td = box.address
+            td = box.default_cap

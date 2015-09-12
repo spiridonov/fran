@@ -1,0 +1,13 @@
+.row
+  .col-md-5.col-md-offset-1
+
+    h1.text-center Редактировать бокс
+
+    = form_for @box, url: admin_box_path(@box), method: :put, html: {class: "form-horizontal"} do |f|
+      = render 'form', f: f
+      
+      br
+      
+      .form-group
+        .col-sm-7
+          = f.submit "Сохранить", class: "btn btn-success pull-right"

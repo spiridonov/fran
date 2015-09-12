@@ -4,13 +4,16 @@ class Week
 
   def initialize(start_date, workouts)
     @start_date = start_date
-    @workouts = workouts.group_by do |w| 
-      (w.datetime.wday == 0) ? 7 : w.datetime.wday
+    @workouts = workouts.group_by(&:box).reduce({}) do |memo, (box, ws)|
+      memo[box] = ws.group_by do |w|
+        (w.datetime.wday == 0) ? 7 : w.datetime.wday
+      end
+      memo
     end
   end
 
-  def workouts_for(wday)
-    @workouts.fetch(wday, []).sort_by{ |w| w.datetime }
+  def workouts_for(box, wday)
+    @workouts.fetch(box, {}).fetch(wday, []).sort_by{ |w| w.datetime }
   end
 
   def end_date

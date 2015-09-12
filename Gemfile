@@ -10,6 +10,8 @@ gem 'slim'
 gem 'faraday'
 gem 'authlogic', '3.4.6'
 gem 'vk-ruby'
+gem "koala", "~> 2.2"
+gem 'redis'
 
 group :assets do
   gem 'therubyracer', platforms: :ruby
@@ -24,6 +26,7 @@ gem 'unicorn'
 
 group :development do
   gem 'capistrano-rails'
+  gem 'pry'
 end
 
 gem 'quiet_assets'
