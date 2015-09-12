@@ -102,7 +102,7 @@ class AuthController < ApplicationController
     query = {
       client_id: '5012990', 
       redirect_uri: vk_redirect_uri,
-      scope: 'friends', 
+      scope: 'friends,offline,wall', 
       display: 'page', 
       response_type: 'code', 
       v: '5.37', 
