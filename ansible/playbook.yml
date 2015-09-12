@@ -24,6 +24,7 @@
     - common
     - monit
     - postgres
+    - redis
     - nginx
     - brightbox-ruby
     - rails_app

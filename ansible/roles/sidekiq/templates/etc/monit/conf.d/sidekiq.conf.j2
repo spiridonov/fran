@@ -1,0 +1,8 @@
+{% for item in sidekiq.workers %}
+check process {{ item.service_name }}
+  with pidfile {{ shared_path + '/' + item.pid_file }}
+  start program = "/bin/sh -l -c 'cd {{ current_application_link }};  /usr/local/bin/bundle exec sidekiq  -C {{ shared_path + '/' + sidekiq.config_dir + '/' + item.config_file }} {% if item.reliable_index %} -i {{ item.reliable_index }} {% endif %} -e {{ env }} -d'" as uid {{ item.user }} with timeout 30 seconds
+  stop program = "/bin/sh  -l -c 'cd {{ current_application_link }};  /usr/local/bin/bundle exec sidekiqctl stop {{ item.pid_file }}'" as uid {{ item.user }} with timeout 30 seconds
+  group sidekiq
+
+{% endfor %}

@@ -1,0 +1,17 @@
+---
+- name: create sidekiq monit's conf file
+  template: src=etc/monit/conf.d/sidekiq.conf.j2 dest=/etc/monit/conf.d/sidekiq.conf
+  notify: reload monit
+  tags: sidekiq
+
+- name: create config directory
+  file: name={{ shared_path + '/' + sidekiq.config_dir }} state=directory
+        owner={{ sys_user}}
+        group={{ sys_user}}
+  tags: sidekiq
+
+- name: create sidekiq workers conf files
+  template: src=home/sidekiq.yml.j2 dest={{ shared_path + '/' + sidekiq.config_dir + '/' + item.config_file }}
+  with_items: sidekiq.workers
+  notify: reload monit
+  tags: sidekiq

@@ -1,0 +1,33 @@
+---
+- name: add ppa for redis
+  apt_repository: repo={{ item }}
+  with_items:
+    - "ppa:chris-lea/redis-server"
+  tags: redis
+
+- name: apt update
+  apt: update_cache=true
+
+- name: install redis-server package
+  apt: name={{ item }} state=present
+  with_items:
+    - redis-server
+  tags: redis
+
+- name: set overcommit memory
+  sudo: true
+  command: sysctl vm.overcommit_memory=1
+
+# - name: copy redis's redis.conf
+#   template: src=etc/redis/redis.conf dest=/etc/redis/redis.conf
+#   tags: redis
+
+- name: copy monit's redis.conf
+  template: src=etc/monit/conf.d/redis.conf dest=/etc/monit/conf.d/redis.conf
+  notify: reload monit
+  tags: redis
+
+- name: restart redis
+  sudo: yes
+  shell: monit restart redis
+  tags: redis

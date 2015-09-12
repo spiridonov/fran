@@ -1,0 +1,38 @@
+---
+sidekiq:
+  config_dir: config
+  workers:
+    - service_name: sidekiq_1
+      user: '{{ web_user }}'
+      pid_file: tmp/pids/sidekiq_1.pid
+      log_file: log/sidekiq_1.log
+      reliable_index:
+      config_file: sidekiq_1.yml
+      concurrency: 20
+      dynamic: true
+      verbose: true
+      require:
+      timeout:
+      queues:
+        - name: default
+          priority:
+        - name: queued_http_requests
+          priority:
+        - name: quotation
+          priority:
+        - name: rollbar
+          priority:
+        - name: tendering_job_change
+          priority:
+        - name: send_notifications
+          priority:
+        - name: queued_alerts
+          priority:
+        - name: tendering
+          priority:
+        - name: mailer
+          priority:
+        - name: import_csv
+          priority:
+        - name: carrier_plan
+          priority:

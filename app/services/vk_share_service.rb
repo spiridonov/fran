@@ -27,7 +27,7 @@ class VkShareService
   end
 
   def wall_posts
-    api = VK::Application.new(version: '5.37')
+    api = VK::Application.new(version: '5.37', access_token: @user.vk_token)
 
     result = api.vk_call('wall.get', {owner_id: @user.vk_id, filter: 'owner', offset: 0, count: 100})
 

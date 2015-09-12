@@ -1,0 +1,29 @@
+---
+{% if item.verbose %}
+:verbose: true
+{% endif %}
+{% if item.reliable_index %}
+:reliable: true
+{% endif %}
+:environment: {{ env }}
+{% if item.require %}
+:require: {{ item.require }}
+{% endif %}
+{% if item.pid_file %}
+:pidfile: {{ item.pid_file }}
+{% endif %}
+:logfile: {{ item.log_file }}
+{% if item.concurrency %}
+:concurrency: {{ item.concurrency }}
+{% endif %}
+{% if item.queues %}
+:queues:
+{% for queue in item.queues %}{% if queue.priority %}
+  - [ {{ queue.name }} ,  {{ queue.priority }} ]
+{% else %}
+  - {{ queue.name }}
+{% endif %}{% endfor %}{% endif %}
+{% if item.dynamic %}
+:dynamic: true
+{% endif %}
+:timeout: {% if item.timeout %}{{ item.timeout }}{% else %}300{% endif %}
