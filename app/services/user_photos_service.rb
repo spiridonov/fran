@@ -64,7 +64,7 @@ class UserPhotosService
   def get_from_vk(users, size)
     sizes = {
       small: 'photo_50',
-      large: 'photo_400_orig'
+      large: 'photo_max'
     }
     vk_ids = users.map(&:vk_id)
     api = VK::Application.new(version: '5.37')

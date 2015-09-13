@@ -74,7 +74,7 @@ module ApplicationHelper
       description: '#test',
       # image: ''
     }
-    link_to "Расскажу друзьям!", "http://vk.com/share.php?#{query.to_query}", class: 'btn btn-md btn-success'
+    link_to "Расскажу друзьям!", "http://vk.com/share.php?#{query.to_query}", class: 'btn btn-md btn-primary'
   end
 
 end

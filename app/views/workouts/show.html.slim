@@ -21,17 +21,20 @@
         .jumbotron
           - if @workout.users.include?(current_user)
             p Ты записан! Ждем тебя на тренировке;)
-            br
-            => share_link(current_user)
-            => link_to "Не, я не пойду...", will_not_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-danger'
+            p
+              => link_to "Не, я не пойду...", will_not_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-danger'
+              => share_link(current_user)
           - else
             - if WorkoutService.user_free_to_go_to?(@workout, current_user)
               p Отличный день для тренировки! Пойдешь?;)
-              = link_to "Пойду!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success'
+              p
+                = link_to "Пойду!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success'
+                => share_link(current_user)
             - else
               p Ты уже записан на этот день в другое время.
               p
-                = link_to "Нет, пойду лучше на это время!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success'
+                => link_to "Нет, пойду лучше на это время!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success'
+                => share_link(current_user)
 
       h2.text-center = "Атлеты (#{@workout.users.size}/#{@workout.cap})"
 
@@ -50,11 +53,13 @@
           - if WorkoutService.user_free_to_go_to?(@workout, current_user)
             p Никто еще не записался на эту тренировку...
             p
-              = link_to "А я пойду!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success'
+              => link_to "А я пойду!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success'
+              => share_link(current_user)
           - else
             p Ты уже записан на этот день в другое время.
             p
-              = link_to "Нет, пойду лучше на это время!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success'
+              => link_to "Нет, пойду лучше на это время!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success'
+              => share_link(current_user)
 
       - else
         .jumbotron
