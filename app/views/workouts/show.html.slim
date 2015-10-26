@@ -41,7 +41,7 @@
                 => link_to "Нет, пойду лучше на это время!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success'
                 => share_link(current_user, @workout.box)
               .visible-xs
-                => link_to "Нет, пойду лучше на это время!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success btn-block'
+                => link_to "Нет, пойду на это время!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success btn-block'
                 => share_link(current_user, @workout.box, 'btn-block')
 
       h2.text-center = "Атлеты (#{@workout.users.size}/#{@workout.cap})"
@@ -74,14 +74,17 @@
               => link_to "Нет, пойду лучше на это время!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success'
               => share_link(current_user, @workout.box)
             .visible-xs
-              => link_to "Нет, пойду лучше на это время!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success btn-block'
+              => link_to "Нет, пойду на это время!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success btn-block'
               => share_link(current_user, @workout.box, 'btn-block')
 
       - else
         .jumbotron
           p Никто не пришел на эту тренирку:(
 
-    = link_to 'Назад к расписанию', workouts_path(start_date: @workout.datetime.to_date.beginning_of_week), class: 'btn btn-sm btn-default'
+    .hidden-xs
+      = link_to 'Назад к расписанию', workouts_path(start_date: @workout.datetime.to_date.beginning_of_week), class: 'btn btn-sm btn-default'
+    .visible-xs
+      = link_to 'Назад к расписанию', workouts_path(start_date: @workout.datetime.to_date.beginning_of_week), class: 'btn btn-md btn-default btn-block'
 
 .row
   br

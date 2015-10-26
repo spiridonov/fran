@@ -21,7 +21,7 @@ nav
 
 - Box.all.each do |box|
   hr
-  h2
+  h3
     => box.name
     small = box.address
   br
@@ -38,3 +38,6 @@ nav
             => workout.datetime.strftime("%H:%M")
             span class="badge" = workout.users.size
           br
+
+.row
+  br
