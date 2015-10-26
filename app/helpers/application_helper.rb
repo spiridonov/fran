@@ -54,27 +54,27 @@ module ApplicationHelper
     ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'][n - 1]
   end
 
-  def share_link(user, box)
+  def share_link(user, box, classes = nil)
     if user.vk_id.present?
-      vk_share_link(user, box)
+      vk_share_link(user, box, classes)
     else
-      fb_share_link(user, box)
+      fb_share_link(user, box, classes)
     end
   end
 
-  def fb_share_link(user, box)
+  def fb_share_link(user, box, classes)
     if box.social_url.present?
       query = {
         u: box.social_url,
         t: box.social_title,
       }
       link_to "Расскажу друзьям!", "https://www.facebook.com/sharer/sharer.php?#{query.to_query}", 
-        class: 'btn btn-md btn-primary', target: '_blank',
+        class: "btn btn-md btn-primary  #{classes}", target: '_blank',
         onclick: "javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
     end
   end
 
-  def vk_share_link(user, box)
+  def vk_share_link(user, box, classes)
     if box.social_url.present?
       query = {
         url: box.social_url,
@@ -84,7 +84,7 @@ module ApplicationHelper
         # image: ''
       }
       link_to "Расскажу друзьям!", "http://vk.com/share.php?#{query.to_query}", 
-        class: 'btn btn-md btn-primary', target: '_blank',
+        class: "btn btn-md btn-primary #{classes}", target: '_blank',
         onclick: "javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
     end
   end
