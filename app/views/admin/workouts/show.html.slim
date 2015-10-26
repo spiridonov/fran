@@ -48,11 +48,11 @@
                 td
                   .pull-right
                     / - if WorkoutService.can_mark_absent_users?(@workout)
-                    => link_to "Удалить", "#", class: 'btn btn-sm btn-danger'
+                    => link_to "Удалить", admin_user_workout_path(user_workout), class: 'btn btn-sm btn-danger', method: :delete
                     - if user_workout.visited
-                      = link_to "Пришел", "#", class: 'btn btn-sm btn-success disabled'
+                      = link_to "Пришел", mark_as_not_visited_admin_user_workout_path(user_workout), class: 'btn btn-sm btn-success', method: :post
                     - else
-                      = link_to "Не пришел", "#", class: 'btn btn-sm btn-danger'
+                      = link_to "Не пришел", mark_as_visited_admin_user_workout_path(user_workout), class: 'btn btn-sm btn-danger', method: :post
 
     hr
 

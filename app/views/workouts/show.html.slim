@@ -1,7 +1,6 @@
 .row
   .col-md-5.col-md-offset-1
 
-
     h1.text-center
       | Тренировка
       =< @workout.datetime.strftime("%H:%M")
@@ -23,18 +22,18 @@
             p Ты записан! Ждем тебя на тренировке;)
             p
               => link_to "Не, я не пойду...", will_not_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-danger'
-              => share_link(current_user)
+              => share_link(current_user, @workout.box)
           - else
             - if WorkoutService.user_free_to_go_to?(@workout, current_user)
               p Отличный день для тренировки! Пойдешь?;)
               p
                 = link_to "Пойду!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success'
-                => share_link(current_user)
+                => share_link(current_user, @workout.box)
             - else
               p Ты уже записан на этот день в другое время.
               p
                 => link_to "Нет, пойду лучше на это время!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success'
-                => share_link(current_user)
+                => share_link(current_user, @workout.box)
 
       h2.text-center = "Атлеты (#{@workout.users.size}/#{@workout.cap})"
 
@@ -47,6 +46,8 @@
                 td
                   => image_tag user_photos.for(user, :small), size: '50x50', class: 'img-circle'
                   => social_url_with_name(user)
+      hr
+      
     - else
       - if WorkoutService.can_anybody_take_part?(@workout)
         .jumbotron
@@ -54,13 +55,16 @@
             p Никто еще не записался на эту тренировку...
             p
               => link_to "А я пойду!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success'
-              => share_link(current_user)
+              => share_link(current_user, @workout.box)
           - else
             p Ты уже записан на этот день в другое время.
             p
               => link_to "Нет, пойду лучше на это время!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success'
-              => share_link(current_user)
+              => share_link(current_user, @workout.box)
 
       - else
         .jumbotron
           p Никто не пришел на эту тренирку:(
+
+    = link_to 'Назад к расписанию', workouts_path(start_date: @workout.datetime.to_date.beginning_of_week), class: 'btn btn-sm btn-default'
+

@@ -1,0 +1,240 @@
+css:
+  .cover-image {
+    height: 700px;
+    background-size: cover;
+    background-image: url("/images/main1.jpg");
+    background-repeat: no-repeat;
+    background-position: bottom center;
+  }
+
+  #section_map {
+    width: 100%;
+    height: 600px;
+  }
+
+  /* Large desktop */
+  @media (min-width: 1200px) { 
+  
+  }
+   
+  /* Portrait tablet to landscape and desktop */
+  @media (min-width: 768px) and (max-width: 979px) {
+
+  }
+   
+  /* Landscape phone to portrait tablet */
+  @media (max-width: 767px) {
+    .cover-image {
+      height: 200px;
+    }
+
+    .wood-background img {
+      width: 100%;
+    }
+
+    #section_map {
+      height: 400px;
+    }
+  }
+   
+  /* Landscape phones and down */
+  @media (max-width: 480px) {
+
+  }
+
+  .wood-background {
+    background-size: cover;
+    background-image: url("/images/bg.jpg");
+    background-repeat: no-repeat;
+    background-position: bottom center;
+  }
+
+  .masthead {
+    background-color: #999;
+    background-color: rgba(255,255,255,.85);
+  }
+
+  #gmap_canvas img{max-width:none!important;background:none!important}
+
+script src="https://maps.googleapis.com/maps/api/js"
+
+nav class="navbar masthead" role="navigation"
+  .container
+    .navbar-header
+      .navbar-brand
+        | CrossFit SMR
+        =< image_tag "reebok_symbol.png", size: '30x30', class: 'pull-right brand-logo'
+    
+    ul class="nav navbar-nav navbar-right"
+      li
+        a href="#" data-section="price" Цены
+      li
+        a href="#" data-section="schedule" Расписание
+      li
+        a href="#" data-section="map" Как проехать
+      li
+        a href="#" data-section="links" Контакты
+
+.container-fluid
+  .row.cover-image
+
+  .row#section_price
+    h1.text-center Цены
+
+    p.text-center.lead
+      | Вы можете купить разовые посещения или безлимитную карту, дающую возможность посещать любые занятия. Все наши занятия проходят только в группах с тренерами. Члены клуба с безлимитными картами имеют возможность самостоятельно тренироваться в часы открытого зала Open Gym.
+
+  .row
+    .col-xs-7.col-sm-2.col-sm-offset-1
+      h3 Разовые занятия
+
+      ul    
+        li
+          | 1 занятие –
+          b<> 500
+          i class="fa fa-rub"
+        li
+          | 5 занятий –
+          b<> 2 400
+          i class="fa fa-rub"
+        li
+          | 10 занятий –
+          b<> 4 400
+          i class="fa fa-rub"
+
+    .col-xs-7.col-sm-2
+      h3 Безлимитные карты
+      ul
+        li      
+          | 1 месяц – 
+          b<> 4 800
+          i class="fa fa-rub"
+        li
+          | 3 месяца –
+          b<> 13 800
+          i class="fa fa-rub"
+        li
+          | 6 месяцев –
+          b<> 26 400
+          i class="fa fa-rub"
+        li
+          | 12 месяцев –
+          b<> 50 400
+          i class="fa fa-rub"
+
+    .col-xs-7.col-sm-2
+      h3 Скидки
+      ul
+        li студентам очной формы обучения
+        li сотрудникам МВД, МЧС
+        li ветеранам боевых действий
+        li семьям
+  .row
+    br
+
+  .row.wood-background.text-center#section_schedule
+    img src="/images/schedule.jpg"
+
+  .row
+    h1.text-center Записаться на тренировку
+
+    .col-md-5.col-md-offset-1
+      p.text-center.lead
+        | Чтобы попасть к нам на тренировку, нужно предварительно записаться. Сделать это очень просто: войти с помощью своей любимой социальной сети и одним кликом выбрать подходящие день и время.
+      br  
+      - if current_user.present?
+        p.text-center.hidden-xs
+          => link_to 'Войти', workouts_path, class: 'btn btn-lg btn-primary'
+        .visible-xs
+          => link_to 'Войти', workouts_path, class: 'btn btn-lg btn-primary btn-block'
+      - else
+        p.text-center.hidden-xs
+          => link_to @vk_auth_url, class: 'btn btn-lg btn-primary' do
+            i> class="fa fa-vk"
+            | ВКонтакте
+          => link_to @fb_auth_url, class: 'btn btn-lg btn-primary' do
+            i> class="fa fa-facebook"
+            | Facebook
+        .visible-xs
+          => link_to @vk_auth_url, class: 'btn btn-lg btn-primary btn-block' do
+            i> class="fa fa-vk"
+            | ВКонтакте
+          => link_to @fb_auth_url, class: 'btn btn-lg btn-primary btn-block' do
+            i> class="fa fa-facebook"
+            | Facebook
+      br  
+
+  .row
+    .col-xs-7#section_map
+
+  .row#section_links
+    h1.text-center Контакты
+  .row.lead
+    br
+    .col-xs-7.col-md-2.col-md-offset-1
+      i> class="fa fa-vk"
+      | &nbsp;
+      = link_to "vk.com/cf163", "https://vk.com/cf163", target: '_blank'
+
+    .col-xs-7.col-md-2
+      i> class="fa fa-phone"
+      | &nbsp;
+      | +7 (927) 691 28 01
+
+    .col-xs-7.col-md-2
+      i> class="fa fa-location-arrow"
+      | &nbsp;
+      | Дачная 20
+
+div style="height: 200px;"
+
+javascript:
+  function init_map(){
+    var options = {
+      zoom: 15,
+      scrollwheel: false,
+      draggable: false,
+      streetViewControl: false,
+      center:new google.maps.LatLng(53.1945, 50.150702000000024),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById("section_map"), options);
+    marker = new google.maps.Marker({
+      map: map,
+      position: new google.maps.LatLng(53.1945, 50.150702000000024)
+    });
+    infowindow = new google.maps.InfoWindow({
+      content: "<b>CrossFit SMR</b><br/>Дачная 20"
+    });
+    google.maps.event.addListener(marker, "click", function(){
+      infowindow.open(map, marker);
+    });
+    infowindow.open(map, marker);
+  }
+  google.maps.event.addDomListener(window, 'load', init_map);
+
+  $(document).ready(function() {
+    var navOffset;
+
+    if (window.innerWidth <= 767) {
+      $(".navbar").addClass("navbar-static-top");
+      navOffset = 0;
+    } else {
+      $(".navbar").addClass("navbar-fixed-top");
+      navOffset = $('.navbar').height();
+    }
+
+    $('.navbar li a').click(function(event) {
+      window.location.hash = '#' + $(this).data('section');
+      event.preventDefault();
+
+      $('#section_' + $(this).data('section'))[0].scrollIntoView();
+      scrollBy(0, -navOffset);
+    });
+
+    if (window.location.hash) {
+      $('#section_' + window.location.hash.replace('#', ''))[0].scrollIntoView();
+      scrollBy(0, -navOffset);
+    }
+  });
+

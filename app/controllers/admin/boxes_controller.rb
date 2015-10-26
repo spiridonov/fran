@@ -49,7 +49,7 @@ class Admin::BoxesController < Admin::BaseController
     params.
       require(:box).
       permit(
-        :name, :address, :default_cap
+        :name, :address, :default_cap, :social_url, :social_title, :social_description
       )
   end
 

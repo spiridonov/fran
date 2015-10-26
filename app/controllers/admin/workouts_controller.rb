@@ -9,8 +9,8 @@ class Admin::WorkoutsController < Admin::BaseController
     
     end_date = start_date.end_of_week
     workouts = Workout.
-      where('datetime >= ?', start_date).
-      where('datetime <= ?', end_date).
+      where('datetime::date >= ?', start_date).
+      where('datetime::date <= ?', end_date).
       includes(:users, :box).
       all
     @week = Week.new(start_date, workouts)
@@ -52,10 +52,6 @@ class Admin::WorkoutsController < Admin::BaseController
       flash[:alert] = 'При сохранении произошли ошибки'
       render 'new'
     end
-  end
-
-  def remove_user_workout
-    
   end
 
   private

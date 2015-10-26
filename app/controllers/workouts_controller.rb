@@ -9,8 +9,8 @@ class WorkoutsController < ApplicationController
     
     end_date = start_date.end_of_week
     workouts = Workout.
-      where('datetime >= ?', start_date).
-      where('datetime <= ?', end_date).
+      where('datetime::date >= ?', start_date).
+      where('datetime::date <= ?', end_date).
       includes(:users).
       all
     @week = Week.new(start_date, workouts)
@@ -32,7 +32,8 @@ class WorkoutsController < ApplicationController
       workout.user_workouts.create(user: current_user)
     end
 
-    redirect_to workouts_path(start_date: workout.datetime.to_date.beginning_of_week)
+    # redirect_to workouts_path(start_date: workout.datetime.to_date.beginning_of_week)
+    redirect_to workout_path(workout)
   end
 
   def will_not_go
@@ -42,7 +43,8 @@ class WorkoutsController < ApplicationController
       workout.user_workouts.where(user_id: current_user.id).destroy_all
     end
 
-    redirect_to workouts_path(start_date: workout.datetime.to_date.beginning_of_week)
+    # redirect_to workouts_path(start_date: workout.datetime.to_date.beginning_of_week)
+    redirect_to workout_path(workout)
   end
 
 end

@@ -55,8 +55,9 @@ class UserPhotosService
 
   def get_from_fb(users, size)
     users.reduce({}) do |memo, user|
-      koala = Koala::Facebook::API.new(user.fb_token)
-      memo[user] = koala.get_picture('me', type: size.to_s)
+      # koala = Koala::Facebook::API.new(user.fb_token)
+      koala = Koala::Facebook::API.new("448225325365100|b8f0521ab17603db9e50fa51d9d3bdcf")
+      memo[user] = koala.get_picture(user.fb_id, type: size.to_s)
       memo
     end
   end

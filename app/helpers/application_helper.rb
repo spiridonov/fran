@@ -54,27 +54,39 @@ module ApplicationHelper
     ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'][n - 1]
   end
 
-  def share_link(user)
+  def share_link(user, box)
     if user.vk_id.present?
-      vk_share_link(user)
+      vk_share_link(user, box)
     else
-      fb_share_link(user)
+      fb_share_link(user, box)
     end
   end
 
-  def fb_share_link(user)
-    
+  def fb_share_link(user, box)
+    if box.social_url.present?
+      query = {
+        u: box.social_url,
+        t: box.social_title,
+      }
+      link_to "Расскажу друзьям!", "https://www.facebook.com/sharer/sharer.php?#{query.to_query}", 
+        class: 'btn btn-md btn-primary', target: '_blank',
+        onclick: "javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
+    end
   end
 
-  def vk_share_link(user)
-    query = {
-      url: "http://spiridonov.pro/?ref=#{user.referral_code}",
-      noparse: true,
-      title: 'Test',
-      description: '#test',
-      # image: ''
-    }
-    link_to "Расскажу друзьям!", "http://vk.com/share.php?#{query.to_query}", class: 'btn btn-md btn-primary'
+  def vk_share_link(user, box)
+    if box.social_url.present?
+      query = {
+        url: box.social_url,
+        noparse: false,
+        title: box.social_title,
+        description: box.social_description,
+        # image: ''
+      }
+      link_to "Расскажу друзьям!", "http://vk.com/share.php?#{query.to_query}", 
+        class: 'btn btn-md btn-primary', target: '_blank',
+        onclick: "javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
+    end
   end
 
 end

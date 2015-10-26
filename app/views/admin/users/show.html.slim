@@ -26,34 +26,34 @@
           dt Обещал и не пришел
           dd = @user.user_workouts.select{ |w| !w.visited }.size
 
-    h2.text-center Рассказать друзьям
+    / h2.text-center Рассказать друзьям
 
-    - share_service = ShareService.new(@user)
-    .row
-      .col-md-5.col-md-offset-2
-        dl.dl-horizontal
-          dt Расшариваний
-          dd = share_service.shares_count
-        dl.dl-horizontal
-          dt Переходов
-          dd = share_service.clicks_count
-        dl.dl-horizontal
-          dt Живых записей
-          dd
-            ul
-              - share_service.wall_posts.each do |post|
-                li
-                  => post[:datetime].strftime("%d.%m.%Y")
-                  span class="glyphicon glyphicon-heart"
-                  =<> post[:likes]
-                  span class="glyphicon glyphicon-bullhorn"
-                  =<> post[:reposts]
-                  span class="glyphicon glyphicon-comment"
-                  =< post[:comments]
+    / - share_service = ShareService.new(@user)
+    / .row
+    /   .col-md-5.col-md-offset-2
+    /     dl.dl-horizontal
+    /       dt Расшариваний
+    /       dd = share_service.shares_count
+    /     dl.dl-horizontal
+    /       dt Переходов
+    /       dd = share_service.clicks_count
+    /     dl.dl-horizontal
+    /       dt Живых записей
+    /       dd
+    /         ul
+    /           - share_service.wall_posts.each do |post|
+    /             li
+    /               => post[:datetime].strftime("%d.%m.%Y")
+    /               span class="glyphicon glyphicon-heart"
+    /               =<> post[:likes]
+    /               span class="glyphicon glyphicon-bullhorn"
+    /               =<> post[:reposts]
+    /               span class="glyphicon glyphicon-comment"
+    /               =< post[:comments]
 
-        dl.dl-horizontal
-          dt Новых регистраций
-          dd = share_service.invited_users_count
+    /     dl.dl-horizontal
+    /       dt Новых регистраций
+    /       dd = share_service.invited_users_count
 
     h2.text-center Тренировки
 

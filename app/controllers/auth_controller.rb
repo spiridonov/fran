@@ -32,7 +32,7 @@ class AuthController < ApplicationController
 
     end
 
-    redirect_to root_path
+    redirect_to workouts_path
   end
 
   def vk_callback
@@ -75,12 +75,7 @@ class AuthController < ApplicationController
       raise json["error_description"]
     end
 
-    redirect_to root_path
-  end
-
-  def sign_in
-    @vk_auth_url = vk_auth_url
-    @fb_auth_url = fb_auth_url
+    redirect_to workouts_path
   end
 
   def sign_out

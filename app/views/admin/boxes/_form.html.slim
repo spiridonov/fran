@@ -12,3 +12,24 @@
   = f.label :default_cap, "Ограничение (чел.)", class: "col-sm-2"
   .col-sm-2
     = f.number_field :default_cap, class: "form-control"
+
+hr
+
+h4.text-center Рассказать друзьям
+
+br
+
+.form-group
+  = f.label :social_url, "Ссылка", class: "col-sm-2"
+  .col-sm-5
+    = f.text_field :social_url, class: "form-control"
+
+.form-group
+  = f.label :social_title, "Заголовок", class: "col-sm-2"
+  .col-sm-5
+    = f.text_field :social_title, class: "form-control"
+
+.form-group
+  = f.label :social_description, "Описание", class: "col-sm-2"
+  .col-sm-5
+    = f.text_field :social_description, class: "form-control"

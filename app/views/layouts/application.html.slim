@@ -10,10 +10,14 @@ html
     nav class="navbar navbar-default navbar-static-top" role="navigation"
       .container
         .navbar-header
-          .navbar-brand
+          = link_to root_path, class: 'navbar-brand' do
             | CrossFit SMR
             =< image_tag "reebok_symbol.png", size: '30x30', class: 'pull-right brand-logo'
         ul class="nav navbar-nav navbar-right"
+          li
+            = link_to root_path do
+              span> class="glyphicon glyphicon-home"
+              | На главную
           li
             = link_to workouts_path do
               span> class="glyphicon glyphicon-list"
