@@ -12,6 +12,7 @@ gem 'authlogic', '3.4.6'
 gem 'vk-ruby'
 gem "koala", "~> 2.2"
 gem 'redis'
+gem 'carrierwave'
 
 group :assets do
   gem 'therubyracer', platforms: :ruby

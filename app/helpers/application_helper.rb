@@ -78,10 +78,10 @@ module ApplicationHelper
     if box.social_url.present?
       query = {
         url: box.social_url,
-        noparse: false,
+        noparse: true,
         title: box.social_title,
         description: box.social_description,
-        # image: ''
+        image: URI.join(root_url, box.social_image.url)
       }
       link_to "Расскажу друзьям!", "http://vk.com/share.php?#{query.to_query}", 
         class: "btn btn-md btn-primary #{classes}", target: '_blank',

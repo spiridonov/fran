@@ -33,3 +33,11 @@ br
   = f.label :social_description, "Описание", class: "col-sm-2"
   .col-sm-5
     = f.text_field :social_description, class: "form-control"
+
+.form-group
+  = f.label :social_image, "Картинка", class: "col-sm-2"
+  .col-sm-5
+    = f.file_field :social_image, class: "form-control"
+    br
+    - if f.object.social_image.present?
+      img src=f.object.social_image.url style="max-width: 100%;"

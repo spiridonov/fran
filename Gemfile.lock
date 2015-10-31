@@ -54,6 +54,9 @@ GEM
     capistrano-rails (1.1.3)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
+    carrierwave (0.6.2)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
     coderay (1.1.0)
     colorize (0.7.7)
     commonjs (0.2.7)
@@ -222,6 +225,7 @@ PLATFORMS
 DEPENDENCIES
   authlogic (= 3.4.6)
   capistrano-rails
+  carrierwave
   faraday
   jquery-rails
   koala (~> 2.2)

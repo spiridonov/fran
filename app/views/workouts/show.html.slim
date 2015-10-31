@@ -26,6 +26,8 @@
             .visible-xs
               => link_to "Не, я не пойду...", will_not_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-danger btn-block'
               => share_link(current_user, @workout.box, 'btn-block')
+            br
+            p Расскажи друзьям в социальной сети и получи скидку!
           - else
             - if WorkoutService.user_free_to_go_to?(@workout, current_user)
               p Отличный день для тренировки! Пойдешь?;)
@@ -35,6 +37,8 @@
               .visible-xs
                 = link_to "Пойду!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success btn-block'
                 => share_link(current_user, @workout.box, 'btn-block')              
+              br
+              p Расскажи друзьям в социальной сети и получи скидку!
             - else
               p Ты уже записан на этот день в другое время.
               .hidden-xs
@@ -43,6 +47,8 @@
               .visible-xs
                 => link_to "Нет, пойду на это время!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success btn-block'
                 => share_link(current_user, @workout.box, 'btn-block')
+              br
+              p Расскажи друзьям в социальной сети и получи скидку!
 
       h2.text-center = "Атлеты (#{@workout.users.size}/#{@workout.cap})"
 
@@ -68,6 +74,8 @@
             .visible-xs
               => link_to "А я пойду!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success btn-block'
               => share_link(current_user, @workout.box, 'btn-block')
+            br
+            p Расскажи друзьям в социальной сети и получи скидку!
           - else
             p Ты уже записан на этот день в другое время.
             .hidden-xs
@@ -76,7 +84,8 @@
             .visible-xs
               => link_to "Нет, пойду на это время!", will_go_workout_path(@workout), method: :post, class: 'btn btn-md btn-success btn-block'
               => share_link(current_user, @workout.box, 'btn-block')
-
+            br
+            p Расскажи друзьям в социальной сети и получи скидку!
       - else
         .jumbotron
           p Никто не пришел на эту тренирку:(
