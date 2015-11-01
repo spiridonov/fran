@@ -41,9 +41,10 @@ class Admin::WorkoutsController < Admin::BaseController
   def create
     @workout = WorkoutForm.new(workout_params)
     @workout.date = Date.parse(@workout.date)
-    @workout.time = @workout.time.to_i
+    @workout.hours = @workout.hours.to_i
+    @workout.mins = @workout.mins.to_i
 
-    @workout.datetime = @workout.date + @workout.time.hours
+    @workout.datetime = @workout.date + @workout.hours.hours + @workout.mins.minutes
     
     if @workout.save
       flash[:notice] = 'Тренировка успешно создана'
@@ -60,7 +61,7 @@ class Admin::WorkoutsController < Admin::BaseController
     params.
       require(:workout).
       permit(
-        :program, :description, :date, :time, :box_id, :cap
+        :program, :description, :date, :hours, :mins, :box_id, :cap
       )
   end
 

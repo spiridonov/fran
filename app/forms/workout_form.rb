@@ -1,6 +1,6 @@
 class WorkoutForm < Workout
 
-  attr_accessor :time, :date
+  attr_accessor :hours, :mins, :date
 
   def self.build(params)
     form = self.new

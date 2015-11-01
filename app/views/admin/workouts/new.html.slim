@@ -13,10 +13,16 @@
       = f.hidden_field :box_id
 
       .form-group
-        = f.label :time, "Время", class: "col-sm-2"
+        = f.label :hours, "Час", class: "col-sm-2"
         .col-sm-5
-          - collection = (6..23).to_a.map{ |i| ["#{i.to_s.rjust(2, '0')}:00", i] }
-          = f.select :time, collection, {include_blank: false}, {class: "form-control"}
+          - collection = (6..23).to_a.map{ |i| [i.to_s.rjust(2, '0'), i] }
+          = f.select :hours, collection, {include_blank: false}, {class: "form-control"}
+
+      .form-group
+        = f.label :mins, "Минута", class: "col-sm-2"
+        .col-sm-5
+          - collection = (0..11).to_a.map{ |i| [(i*5).to_s.rjust(2, '0'), i*5] }
+          = f.select :mins, collection, {include_blank: false}, {class: "form-control"}
 
       .form-group
         = f.label :cap, "Ограничение (чел.)", class: "col-sm-2"
