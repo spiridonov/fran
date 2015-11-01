@@ -64,8 +64,15 @@ class AuthController < ApplicationController
         user.vk_token = vk_token
         user.save!
       else
-        vk_result = VK::Application.new(version: '5.35').
-          vk_call('users.get', {user_ids: vk_id, fields: 'first_name,last_name'}).first
+        tries = 3
+        vk_result = nil
+        begin
+          vk_result = VK::Application.new(version: '5.35').
+            vk_call('users.get', {user_ids: vk_id, fields: 'first_name,last_name'}).first
+        rescue Faraday::ConnectionFailed => e
+          puts 'Faraday::ConnectionFailed'
+          retry if (tries -= 1) > 0
+        end
 
         user = User.create!(
           vk_id: vk_result['id'],
