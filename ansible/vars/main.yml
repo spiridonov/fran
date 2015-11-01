@@ -1,5 +1,5 @@
 unicorn:
-  server_name: cfsmr.spiridonov.pro
+  server_name: crossfitsmr.ru
 
 env: production
 deployment_parent_dir: /opt
