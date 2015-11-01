@@ -15,6 +15,10 @@ html
             .pull-right &nbsp;CrossFit SMR
             =<> image_tag "reebok_symbol.png", size: '30x30', class: 'pull-right brand-logo'
         ul class="nav navbar-nav navbar-right"
+          li
+            = link_to workouts_path do
+              span> class="glyphicon glyphicon-globe"
+              | Для холопов
           li class=(params[:controller] == 'admin/users' ? 'active' : nil)
             = link_to admin_users_path do
               span> class="glyphicon glyphicon-user"

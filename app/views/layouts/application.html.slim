@@ -23,6 +23,11 @@ html
             = link_to workouts_path do
               span> class="glyphicon glyphicon-list"
               | Расписание
+          - if current_user.admin?
+            li
+              = link_to admin_workouts_path do
+                span> class="glyphicon glyphicon-cog"
+                | Для админа
           li
             = link_to auth_sign_out_path, method: :post do
               span> class="glyphicon glyphicon-log-out"

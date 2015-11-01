@@ -1,19 +1,40 @@
 .site-wrapper
   .site-wrapper-inner
-    .cover-container
+    .cover-container.hidden-xs
       .inner.cover
         h1
-          | CrossFit SMR
+          | Reebok
           =< image_tag "reebok_symbol.png", size: '50x50', class: 'brand-logo'
-
+          | &nbsp;CrossFit SMR
+      
         p
-          | Привет, кроссфиттер! Здесь можно записаться на тренировку и не только;)
+          | Чтобы попасть к нам на тренировку, нужно предварительно записаться. Сделать это очень просто: войти с помощью своей любимой социальной сети и одним кликом выбрать подходящие день и время.
 
         br
 
-        p
-          = link_to 'Войти через VKontakte', @vk_auth_url, class: 'btn btn-lg btn-primary'
+        p.text-center
+          => link_to @vk_auth_url, class: 'btn btn-lg btn-primary' do
+            i> class="fa fa-vk"
+            | ВКонтакте
+          => link_to @fb_auth_url, class: 'btn btn-lg btn-primary' do
+            i> class="fa fa-facebook"
+            | Facebook
+
+    .cover-container.visible-xs
+      .inner
+        h4
+          | Reebok
+          = image_tag "reebok_symbol.png", size: '25x25', class: 'brand-logo'
+          | &nbsp;CrossFit SMR
 
         p
-        = link_to 'Войти через Facebook', @fb_auth_url, class: 'btn btn-lg btn-primary'
+          | Чтобы попасть к нам на тренировку, нужно предварительно записаться. Сделать это очень просто: войти с помощью своей любимой социальной сети и одним кликом выбрать подходящие день и время.
+        br
 
+        .visible-xs
+          => link_to @vk_auth_url, class: 'btn btn-md btn-primary btn-block' do
+            i> class="fa fa-vk"
+            | ВКонтакте
+          => link_to @fb_auth_url, class: 'btn btn-md btn-primary btn-block' do
+            i> class="fa fa-facebook"
+            | Facebook

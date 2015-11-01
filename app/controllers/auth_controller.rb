@@ -4,6 +4,11 @@ class AuthController < ApplicationController
 
   layout 'sign_in'
 
+  def sign_in
+    @vk_auth_url = vk_auth_url
+    @fb_auth_url = fb_auth_url
+  end
+
   def fb_callback
     koala = Koala::Facebook::OAuth.new(
       '448225325365100', 'b8f0521ab17603db9e50fa51d9d3bdcf', fb_redirect_uri
