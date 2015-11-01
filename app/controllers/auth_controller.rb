@@ -111,7 +111,7 @@ class AuthController < ApplicationController
     if Rails.env.development?
       'http://cf.lvh.me:3000'
     else
-      'http://cfsmr.spiridonov.pro'
+      'http://crossfitsmr.ru'
     end
   end
 

@@ -11,8 +11,9 @@ html
       .container
         .navbar-header
           = link_to root_path, class: 'navbar-brand' do
-            | CrossFit SMR
-            =< image_tag "reebok_symbol.png", size: '30x30', class: 'pull-right brand-logo'
+            | Reebok
+            .pull-right &nbsp;CrossFit SMR
+            =<> image_tag "reebok_symbol.png", size: '30x30', class: 'pull-right brand-logo'
         ul class="nav navbar-nav navbar-right"
           li
             = link_to root_path do

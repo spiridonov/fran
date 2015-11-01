@@ -11,8 +11,9 @@ html
       .container
         .navbar-header
           .navbar-brand
-            | CrossFit SMR
-            =< image_tag "reebok_symbol.png", size: '30x30', class: 'pull-right brand-logo'
+            | Reebok
+            .pull-right &nbsp;CrossFit SMR
+            =<> image_tag "reebok_symbol.png", size: '30x30', class: 'pull-right brand-logo'
         ul class="nav navbar-nav navbar-right"
           li class=(params[:controller] == 'admin/users' ? 'active' : nil)
             = link_to admin_users_path do
