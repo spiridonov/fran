@@ -4,7 +4,7 @@ class WorkoutsController < ApplicationController
     if params[:start_date].present?
       start_date = Date.parse(params[:start_date])
     else
-      start_date = Date.today.beginning_of_week
+      start_date = Time.zone.now.to_date.beginning_of_week
     end
     
     end_date = start_date.end_of_week
