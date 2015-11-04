@@ -7,7 +7,9 @@ Rails.application.routes.draw do
       post :mark_as_visited, on: :member
       post :mark_as_not_visited, on: :member
     end
-    resources :workouts
+    resources :workouts do
+      post :copy_previous_week, on: :collection
+    end
     resources :schedules
     resources :boxes
   end

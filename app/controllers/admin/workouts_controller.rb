@@ -31,6 +31,12 @@ class Admin::WorkoutsController < Admin::BaseController
     redirect_to admin_workouts_path(start_date: @workout.datetime.to_date.beginning_of_week)
   end
 
+  def copy_previous_week
+    current_week = Date.parse(params[:current_week])
+    WorkoutService.copy_previous_week(current_week)
+    redirect_to admin_workouts_path(start_date: current_week)
+  end
+
   def update
     @workout = Workout.find(params[:id])
     @workout.update_attributes(workout_params)

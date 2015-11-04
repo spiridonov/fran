@@ -42,3 +42,6 @@ nav
           = link_to new_admin_workout_path(date: date, box_id: box.id), class: "btn btn-success btn-block" do
             span class="glyphicon glyphicon-plus"
           br
+
+hr
+= link_to "Скопировать прошлую неделю", copy_previous_week_admin_workouts_path(current_week: @week.start_date), class: "btn btn-success btn-md", method: :post

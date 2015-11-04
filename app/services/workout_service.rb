@@ -22,4 +22,26 @@ module WorkoutService
       exists?
   end
 
+  def copy_previous_week(current_week)
+    current_week_empty = !Workout.
+      where('datetime::date >= ?', current_week).
+      where('datetime::date <= ?', current_week.end_of_week).
+      exists?
+
+    if current_week_empty
+      previous_week = current_week - 7.days
+      workouts = Workout.
+        where('datetime::date >= ?', previous_week).
+        where('datetime::date <= ?', previous_week.end_of_week).
+        all
+      workouts.each do |workout|
+        Workout.create(
+          box_id: workout.box_id,
+          datetime: workout.datetime + 7.days,
+          cap: workout.cap,
+          description: workout.description,
+        )
+      end
+    end
+  end
 end
