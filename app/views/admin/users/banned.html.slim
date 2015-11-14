@@ -4,19 +4,12 @@
     h1.text-center Атлеты
 
     ul class="nav nav-tabs"
-      li role="presentation" class="active"
+      li role="presentation"
         = link_to 'Все', admin_users_path
       li role="presentation"
         = link_to 'Давно не ходили', lazy_admin_users_path
-      li role="presentation"
+      li role="presentation" class="active"
         = link_to 'Забаненные', banned_admin_users_path
-
-    p
-      .row
-        form class="navbar-form navbar-right" role="search" method='get' action=admin_users_path
-          .form-group
-            input<> type="text" class="form-control" placeholder="Поиск..." name='search' value=params[:search]
-            button type='submit' class='btn btn-primary' Поиск
 
     - if @users.present?
       table class="table"

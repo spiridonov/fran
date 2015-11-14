@@ -2,7 +2,12 @@ Rails.application.routes.draw do
   root 'home#index'
 
   namespace :admin do
-    resources :users
+    resources :users do 
+      post :ban, on: :member
+      post :unban, on: :member
+      get :banned, on: :collection
+      get :lazy, on: :collection
+    end
     resources :user_workouts, only: [:destroy, :create] do
       post :mark_as_visited, on: :member
       post :mark_as_not_visited, on: :member

@@ -4,24 +4,18 @@
     h1.text-center Атлеты
 
     ul class="nav nav-tabs"
-      li role="presentation" class="active"
-        = link_to 'Все', admin_users_path
       li role="presentation"
+        = link_to 'Все', admin_users_path
+      li role="presentation" class="active"
         = link_to 'Давно не ходили', lazy_admin_users_path
       li role="presentation"
         = link_to 'Забаненные', banned_admin_users_path
-
-    p
-      .row
-        form class="navbar-form navbar-right" role="search" method='get' action=admin_users_path
-          .form-group
-            input<> type="text" class="form-control" placeholder="Поиск..." name='search' value=params[:search]
-            button type='submit' class='btn btn-primary' Поиск
 
     - if @users.present?
       table class="table"
         thead
           th Имя
+          th Последняя тренировка
           th Соцсеть
 
         tbody
@@ -31,6 +25,12 @@
               td
                 => image_tag user_photos.for(user, :small), size: '50x50', class: 'img-circle'
                 => link_to user.name, admin_user_path(user)
+              td
+                - if user.user_workouts.present?
+                  - last = user.user_workouts.max_by{ |w| w.workout.datetime }.workout.datetime
+                  = "#{(Time.zone.now.to_date - last).to_i} дн. назад"
+                - else
+                  | –
               td = social_url(user)
 
       hr

@@ -18,11 +18,18 @@ class ApplicationController < ActionController::Base
   end
 
   def require_user
-    unless current_user
+    if current_user.present?
+      if current_user.banned
+        flash[:notice] = "User is banned"
+        redirect_to root_path
+        false
+      else
+        true
+      end
+    else
       flash[:notice] = "You must be logged in to access this page"
       redirect_to auth_sign_in_path
-      return false
+      false
     end
   end
-
 end

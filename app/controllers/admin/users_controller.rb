@@ -3,7 +3,7 @@ class Admin::UsersController < Admin::BaseController
   # before_filter :require_admin!
 
   def index
-    @users = User.all
+    @users = User.where(banned: false)
     if params[:search]
       @users = @users.where('name ILIKE ?', "%#{params[:search]}%")
     end
@@ -13,6 +13,37 @@ class Admin::UsersController < Admin::BaseController
 
   def show
     @user = User.find(params[:id])
+  end
+
+  def ban
+    @user = User.find(params[:id])
+    @user.update_attributes(banned: true)
+
+    redirect_to admin_user_path(@user)
+  end
+
+  def unban
+    @user = User.find(params[:id])
+    @user.update_attributes(banned: false)
+
+    redirect_to admin_user_path(@user)
+  end
+
+  def lazy
+    @users = User.
+      includes(:user_workouts).
+      where(banned: false).
+      all.
+      select { |user|
+        user.user_workouts.blank? ||
+          user.user_workouts.
+            max_by{ |w| w.workout.datetime }.
+            workout.datetime <= Time.zone.now.to_date - 7.days
+      }
+  end
+
+  def banned
+    @users = User.where(banned: true).all
   end
 
   # def new
@@ -50,15 +81,5 @@ class Admin::UsersController < Admin::BaseController
   #     render 'new'
   #   end
   # end
-
-  private
-
-  def user_params
-    params.
-      require(:user).
-      permit(
-        :name, :email, :password, :password_confirmation
-      )
-  end
 
 end

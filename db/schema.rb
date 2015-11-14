@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151031135914) do
+ActiveRecord::Schema.define(version: 20151114085433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20151031135914) do
     t.string   "fb_id"
     t.string   "referral_code"
     t.integer  "invited_by_id"
+    t.boolean  "banned",            default: false
   end
 
   add_index "users", ["fb_id"], name: "index_users_on_fb_id", using: :btree

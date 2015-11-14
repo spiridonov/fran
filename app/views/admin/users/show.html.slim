@@ -3,10 +3,16 @@
 .row
   .col-md-5.col-md-offset-1
 
-
     h1.text-center = @user.name
 
     br
+
+    .row
+      .pull-right
+        - if @user.banned
+          = link_to 'Разбанить', unban_admin_user_path(@user), class: 'btn btn-success btn-md', method: :post
+        - else
+          = link_to 'Забанить', ban_admin_user_path(@user), class: 'btn btn-danger btn-md', method: :post
 
     .row
       .col-md-2    
@@ -19,9 +25,9 @@
         dl.dl-horizontal
           dt Последний раз был
           dd
-            - last = user_workouts.find{ |w| w.workout.datetime.to_date < Date.today }
+            - last = user_workouts.find{ |w| w.workout.datetime.to_date <= Time.zone.now.to_date }
             - if last.present?
-              = "#{(Date.today - last.workout.datetime.to_date).to_i} дн. назад"
+              = "#{(Time.zone.now.to_date - last.workout.datetime.to_date).to_i} дн. назад"
         dl.dl-horizontal
           dt Обещал и не пришел
           dd = @user.user_workouts.select{ |w| !w.visited }.size
