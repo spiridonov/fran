@@ -28,7 +28,7 @@
               td
                 - if user.user_workouts.present?
                   - last = user.user_workouts.max_by{ |w| w.workout.datetime }.workout.datetime
-                  = "#{(Time.zone.now.to_date - last).to_i} дн. назад"
+                  = "#{(Time.zone.now.to_date - last.to_date).to_i} дн. назад"
                 - else
                   | –
               td = social_url(user)
