@@ -14,9 +14,14 @@
     - if @users.present?
       table class="table"
         thead
-          th Имя
-          th Соцсеть
-
+          tr
+            th Имя
+            th Соцсеть
+        tfoot
+          tr
+            td 
+              b = "Всего: #{@users.size}"
+            td
         tbody
           - user_photos = UserPhotosService.new(@users)
           - @users.each do |user|

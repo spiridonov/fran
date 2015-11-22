@@ -14,10 +14,16 @@
     - if @users.present?
       table class="table"
         thead
-          th Имя
-          th Последняя тренировка
-          th Соцсеть
-
+          tr
+            th Имя
+            th Последняя тренировка
+            th Соцсеть
+        tfoot
+          tr
+            td 
+              b = "Всего: #{@users.size}"
+            td
+            td
         tbody
           - user_photos = UserPhotosService.new(@users)
           - @users.each do |user|
@@ -32,7 +38,6 @@
                 - else
                   | –
               td = social_url(user)
-
       hr
     - else
       br

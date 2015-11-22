@@ -12,8 +12,18 @@
         p = @workout.description
 
     - if @workout.program.present?
-      pre
-        = @workout.program
+      .visible-xs
+        button class="btn btn-sm btn-default btn-block" type="button" data-toggle="collapse" data-target="#collapseProgram" aria-expanded="false" aria-controls="collapseProgram"
+          | Программа тренировки
+          span< class="glyphicon glyphicon-chevron-down"
+      .hidden-xa
+        button class="btn btn-sm btn-default" type="button" data-toggle="collapse" data-target="#collapseProgram" aria-expanded="false" aria-controls="collapseProgram"
+          | Программа тренировки
+          span< class="glyphicon glyphicon-chevron-down"
+      br
+      .collapse id="collapseProgram"
+        pre
+          = @workout.program
 
     - if @workout.users.present?
       - if WorkoutService.can_anybody_take_part?(@workout)
