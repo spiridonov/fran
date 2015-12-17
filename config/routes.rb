@@ -28,5 +28,5 @@ Rails.application.routes.draw do
   get 'fb_callback', to: 'auth#fb_callback'
   post 'auth/sign_out', to: 'auth#sign_out'
   get 'auth/sign_in', to: 'auth#sign_in'
-
+  post 'ask_for_price', to: 'home#ask_for_price'
 end

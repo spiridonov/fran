@@ -9,7 +9,21 @@ class HomeController < ApplicationController
     @fb_auth_url = fb_auth_url
   end
 
+  def ask_for_price
+    PriceRequest.create(price_request_params)
+    flash[:notice] = 'Ваш запрос отправлен. Мы свяжемся с вами.'
+
+    redirect_to root_path
+  end
+
   private
+
+  def price_request_params
+    params.
+      permit(
+        :name, :phone
+      )
+  end
 
   def fb_auth_url
     koala = Koala::Facebook::OAuth.new(

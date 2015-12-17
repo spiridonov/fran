@@ -1,15 +1,23 @@
 css:
   .cover-image {
-    height: 700px;
+    height: 750px;
     background-size: cover;
-    background-image: url("/images/main1.jpg");
+    background-image: url("/images/main2_.jpg");
     background-repeat: no-repeat;
-    background-position: bottom center;
+    background-position: top center;
+  }
+
+  .cover-image2 {
+    height: 750px;
+    background-size: cover;
+    background-image: url("/images/main3_.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
   }
 
   #section_map {
     width: 100%;
-    height: 600px;
+    height: 500px;
   }
 
   /* Large desktop */
@@ -25,6 +33,10 @@ css:
   /* Landscape phone to portrait tablet */
   @media (max-width: 767px) {
     .cover-image {
+      height: 200px;
+    }
+
+    .cover-image2 {
       height: 200px;
     }
 
@@ -67,70 +79,129 @@ nav class="navbar masthead" role="navigation"
         =<> image_tag "reebok_symbol.png", size: '30x30', class: 'pull-right brand-logo'
     
     ul class="nav navbar-nav navbar-right"
-      li
-        a href="#" data-section="price" Цены
-      li
-        a href="#" data-section="schedule" Расписание
-      li
-        a href="#" data-section="map" Как проехать
-      li
-        a href="#" data-section="links" Контакты
+      - if current_user.present?
+        li
+          - if current_user.admin?
+            => link_to 'Для админа', admin_workouts_path
+          - else
+            => link_to 'Записаться на тренировку', workouts_path
+      - else
+        li
+          a href="#" data-section="crossfit" Что такое CrossFit?
+        li
+          a href="#" data-section="price" Цены
+        li
+          a href="#" data-section="schedule" Расписание
+        li
+          a href="#" data-section="map" Контакты
 
 .container-fluid
   .row.cover-image
+    - if flash[:notice]
+      br
+      br
+      br
+      br
+      .pull-right
+        div class="alert alert-success alert-dismissible" role="alert"
+          button type="button" class="close" data-dismiss="alert" aria-label="Close"
+            span aria-hidden="true" &times;
+          = flash[:notice]
+
+
+.container
+  .row#section_crossfit
+    h1.text-center Что такое CrossFit?
+  .row.lead
+    .col-xs-7
+      p СrossFit – это программа, построенная на постоянно варьируемых функциональных движениях, выполняемых с высокой интенсивностью. Данный вид нагрузки направлен на приобретение человеком отличной Общей Физической Подготовки (ОФП), а значит, CrossFit включает в себя движения из различных спортивных дисциплин, таких как: гиревой спорт, тяжёлая атлетика, спортивная гимнастика, гребля, легкая атлетика, пауэрлифтинг и т.д. CrossFit — это целостная система физической подготовки, созданная в США чуть более десяти лет назад, однако за это небольшое время она набрала необычайную популярность во всем мире.
+
+      p
+        | Цель кроссфита — физическое развитие атлета по следующим десяти направлениям:
+        ul
+          li работоспособность сердечно-сосудистой и дыхательной систем
+          li выносливость
+          li сила
+          li гибкость
+          li мощь
+          li скорость
+          li координация
+          li быстрота адаптации к смене нагрузок
+          li баланс
+          li точность
+
+      p Помимо хорошей физической формы кроссфит даст Вам возможность приобрести новых друзей и команду единомышленников, которая всегда поддержит. Каждое занятие по кроссфиту – это море драйва, положительных эмоций, приятного общения.
+
+      hr
+
+      p 
+        b – Это групповые тренировки или я буду заниматься один?
+
+      p Занятия по кроссфиту проходят в небольших группах, 10-12 человек. Тренер находится рядом с Вами в течение всей тренировки: он проводит разминку перед комплексом, следит за техникой выполнения упражнений, а так же проводит заминку и растяжку в конце тренировки.
+
+      hr
+
+      p 
+        b – Сколько длится занятие?
+
+      p Тренировка длится час. За этот время Вы успеваете размяться, отработать основные движения, выполнить комплекс и растянуться. Именно поэтому не стоит опаздывать на тренировку!
+
+      hr
+
+      p 
+        b – Скажите, а как проходит тренировка?
+
+      p
+        | В начале тренировки тренер по кроссфиту знакомит Вас с доской, на которой обозначены основные моменты тренировки:
+
+        ul
+          li Разминка, которая занимает 10-15 минут
+          li Отработка основных движений, которые будут участвовать в комплексе
+          li Непосредственно сам комплекс
+          li Заминка и растяжка
+
+      p По ходу занятия Вы можете задавать тренеру вопросы и просить повторно объяснить то или иное движение.
+
+      hr
+
+      p
+        b – Могу ли я прийти, если никогда не занимался спортом/тренировался ранее, но много лет назад?
+
+      p Конечно можете! Для таких случаем в наших залах есть тренировки On-ramp, созданные специально для новичков. На этих занятиях Вам подробно объяснят технику выполнения упражнений, а так же познакомят с несложными кроссфит комплексами. Только после 10-12 тренировок On-ramp Вы можете переходить в общую группу.
+
+    br
+
+.container-fluid
+  .row.cover-image2
 
 .container
   .row#section_price
-    h1.text-center Цены
+    .col-xs-7
+      h1.text-center Цены
 
-    p.text-center.lead
-      | Вы можете купить разовые посещения или безлимитную карту, дающую возможность посещать любые занятия. Все наши занятия проходят только в группах с тренерами. Члены клуба с безлимитными картами имеют возможность самостоятельно тренироваться в часы открытого зала Open Gym.
+      p.text-center.lead
+        | Вы можете купить разовые посещения или безлимитную карту, дающую возможность посещать любые занятия. Все наши занятия проходят только в группах с тренерами. Члены клуба с безлимитными картами имеют возможность самостоятельно тренироваться в часы открытого зала Open Gym.
+
+  hr
 
   .row
-    .col-xs-7.col-sm-2.col-sm-offset-1
-      h3 Разовые занятия
-
-      ul    
-        li
-          | 1 занятие –
-          b<> 500
-          i class="fa fa-rub"
-        li
-          | 5 занятий –
-          b<> 2 400
-          i class="fa fa-rub"
-        li
-          | 10 занятий –
-          b<> 4 400
-          i class="fa fa-rub"
-
-    .col-xs-7.col-sm-2
-      h3 Безлимитные карты
+    .lead.col-md-3.col-md-offset-1
       ul
-        li      
-          | 1 месяц – 
-          b<> 4 800
-          i class="fa fa-rub"
-        li
-          | 3 месяца –
-          b<> 13 800
-          i class="fa fa-rub"
-        li
-          | 6 месяцев –
-          b<> 26 400
-          i class="fa fa-rub"
-        li
-          | 12 месяцев –
-          b<> 50 400
-          i class="fa fa-rub"
+        li 
+          b Абонемент CrossFit SMR Дачная
+        li 
+          b Абонемент CrossFit SMR Куйбышева
+        li 
+          b Разовое посещение
 
-    .col-xs-7.col-sm-2
-      h3 Скидки
-      ul
-        li студентам очной формы обучения
-        li сотрудникам МВД, МЧС
-        li ветеранам боевых действий
-        li семьям
+    .col-md-2
+      = form_tag ask_for_price_path, method: "post" do
+        .form-group
+          input name="name" type="text" class="form-control input-lg" placeholder="Имя Фамилия"
+        .form-group
+          input name="phone" type="tel" class="form-control input-lg" placeholder="Телефон"
+        .form-group
+          button class="btn btn-block btn-primary btn-lg" Узнать
   .row
     br
 
@@ -181,16 +252,33 @@ nav class="navbar masthead" role="navigation"
       i> class="fa fa-vk"
       | &nbsp;
       = link_to "vk.com/cf163", "https://vk.com/cf163", target: '_blank'
+      br
+      i> class="fa fa-vk"
+      | &nbsp;
+      = link_to "vk.com/crossfitsmr", "https://vk.com/crossfitsmr", target: '_blank'
+      br
+      i> class="fa fa-instagram"
+      | &nbsp;
+      = link_to "@crossfitsamara", "https://www.instagram.com/crossfitsamara", target: '_blank'
 
     .col-xs-7.col-md-2
       i> class="fa fa-phone"
       | &nbsp;
       | +7 (927) 691 28 01
+      br
+      i> class="fa fa-user"
+      | &nbsp;
+      | Ксения
 
     .col-xs-7.col-md-2
       i> class="fa fa-location-arrow"
       | &nbsp;
       | Дачная 20
+      br
+      i> class="fa fa-location-arrow"
+      | &nbsp;
+      | Куйбышева 126А
+
   .row
     br
 
@@ -216,47 +304,63 @@ nav class="navbar masthead" role="navigation"
 
 
 javascript:
-  function init_map(){
-    var options = {
-      zoom: 15,
-      scrollwheel: false,
-      draggable: false,
-      streetViewControl: false,
-      center:new google.maps.LatLng(53.1945, 50.150702000000024),
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    map = new google.maps.Map(document.getElementById("section_map"), options);
-    marker = new google.maps.Marker({
-      map: map,
-      position: new google.maps.LatLng(53.1945, 50.150702000000024)
-    });
-    infowindow = new google.maps.InfoWindow({
-      content: "<b>CrossFit SMR</b><br/>Дачная 20"
-    });
-    google.maps.event.addListener(marker, "click", function(){
-      infowindow.open(map, marker);
-    });
-    infowindow.open(map, marker);
-  }
-  google.maps.event.addDomListener(window, 'load', init_map);
-
   $(document).ready(function() {
     var navOffset;
+    var zoom;
 
     if (window.innerWidth <= 767) {
       $(".navbar").addClass("navbar-static-top");
       navOffset = 0;
+      zoom = 12;
     } else {
       $(".navbar").addClass("navbar-fixed-top");
       navOffset = $('.navbar').height();
+      zoom = 14;
     }
 
-    $('.navbar li a').click(function(event) {
-      window.location.hash = '#' + $(this).data('section');
-      event.preventDefault();
+    function init_map(){
+      var options = {
+        zoom: zoom,
+        scrollwheel: false,
+        draggable: false,
+        streetViewControl: false,
+        center:new google.maps.LatLng(53.194819, 50.125343),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      map = new google.maps.Map(document.getElementById("section_map"), options);
+      marker1 = new google.maps.Marker({
+        map: map,
+        position: new google.maps.LatLng(53.1945, 50.150702000000024)
+      });
+      marker2 = new google.maps.Marker({
+        map: map,
+        position: new google.maps.LatLng(53.194077, 50.092174)
+      });
+      infowindow1 = new google.maps.InfoWindow({
+        content: "<b>CrossFit SMR</b><br/>Дачная 20"
+      });
+      infowindow2 = new google.maps.InfoWindow({
+        content: "<b>CrossFit SMR</b><br/>Куйбышева 126А"
+      });
+      google.maps.event.addListener(marker1, "click", function(){
+        infowindow1.open(map1, marker1);
+      });
+      google.maps.event.addListener(marker2, "click", function(){
+        infowindow2.open(map2, marker2);
+      });
+      infowindow1.open(map, marker1);
+      infowindow2.open(map, marker2);
+    }
+    google.maps.event.addDomListener(window, 'load', init_map);
 
-      $('#section_' + $(this).data('section'))[0].scrollIntoView();
-      scrollBy(0, -navOffset);
+    $('.navbar li a').click(function(event) {
+      if ($(this).data('section')) {
+        window.location.hash = '#' + $(this).data('section');
+        event.preventDefault();
+
+        $('#section_' + $(this).data('section'))[0].scrollIntoView();
+        scrollBy(0, -navOffset);
+      }
     });
 
     if (window.location.hash) {
