@@ -10,8 +10,10 @@ class HomeController < ApplicationController
   end
 
   def ask_for_price
-    PriceRequest.create(price_request_params)
-    flash[:notice] = 'Ваш запрос отправлен. Мы свяжемся с вами.'
+    if price_request_params[:phone].present?
+      PriceRequest.create(price_request_params)
+      flash[:notice] = 'Ваш запрос отправлен. Мы свяжемся с вами.'
+    end
 
     redirect_to root_path
   end
