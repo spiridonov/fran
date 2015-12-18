@@ -17,6 +17,9 @@ Rails.application.routes.draw do
     end
     resources :schedules
     resources :boxes
+    resources :price_requests do
+      post :close, on: :member
+    end
   end
 
   resources :workouts do

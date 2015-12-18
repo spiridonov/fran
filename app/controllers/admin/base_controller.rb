@@ -8,6 +8,11 @@ class Admin::BaseController < ApplicationController
  
   layout 'admin'
 
+  def open_price_requests
+    @_count ||= PriceRequest.where(closed: false).count
+  end
+  helper_method :open_price_requests
+
   # def require_admin!
   #   if current_user.admin?
   #     true

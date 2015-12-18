@@ -1,0 +1,19 @@
+.row
+  .col-md-5.col-md-offset-1
+
+    h1.text-center Хотят узнать цену
+
+    table class="table"
+      thead
+        th Имя Фамилия
+        th Телефон
+        th
+
+      tbody
+        - @price_requests.each do |price_request|
+          tr
+            td = price_request.name
+            td = price_request.phone
+            td.pull-right
+              - if !price_request.closed
+                = link_to 'Закрыть', close_admin_price_request_path(price_request), class: 'btn btn-success btn-sm', method: :post
