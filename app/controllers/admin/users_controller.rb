@@ -1,3 +1,5 @@
+require 'csv'
+
 class Admin::UsersController < Admin::BaseController
 
   # before_filter :require_admin!
@@ -13,6 +15,34 @@ class Admin::UsersController < Admin::BaseController
 
   def show
     @user = User.find(params[:id])
+  end
+
+  def users_report
+    csv_string = CSV.generate do |csv|
+      User.where(banned: false).all.each do |user|
+        csv << [user.id, user.name]
+      end
+    end
+    
+    response.headers['Content-Type'] = 'text/csv'
+    response.headers['Content-Disposition'] = 'attachment; filename=users.csv'  
+
+    render text: csv_string
+  end
+
+  def workouts_report
+    csv_string = CSV.generate do |csv|
+      Workout.includes(:box, :user_workouts => :user).all.each do |workout|
+        workout.user_workouts.each do |user_workout|
+          csv << [workout.box.name, workout.datetime, user_workout.user.id, user_workout.user.name, workout.cap, workout.description, workout.program]
+        end
+      end
+    end
+    
+    response.headers['Content-Type'] = 'text/csv'
+    response.headers['Content-Disposition'] = 'attachment; filename=workouts.csv'  
+
+    render text: csv_string
   end
 
   def ban

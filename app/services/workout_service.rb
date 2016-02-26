@@ -39,6 +39,7 @@ module WorkoutService
           box_id: workout.box_id,
           datetime: workout.datetime + 7.days,
           cap: workout.cap,
+          color: workout.color,
           description: workout.description,
         )
       end

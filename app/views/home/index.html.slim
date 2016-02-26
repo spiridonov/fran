@@ -190,8 +190,6 @@ nav class="navbar masthead" role="navigation"
         li 
           b Абонемент CrossFit SMR Дачная
         li 
-          b Абонемент CrossFit SMR Куйбышева
-        li 
           b Разовое посещение
 
     .col-md-2
@@ -274,10 +272,6 @@ nav class="navbar masthead" role="navigation"
       i> class="fa fa-location-arrow"
       | &nbsp;
       | Дачная 20
-      br
-      i> class="fa fa-location-arrow"
-      | &nbsp;
-      | Куйбышева 126А
 
   .row
     br
@@ -311,11 +305,11 @@ javascript:
     if (window.innerWidth <= 767) {
       $(".navbar").addClass("navbar-static-top");
       navOffset = 0;
-      zoom = 12;
+      zoom = 14;
     } else {
       $(".navbar").addClass("navbar-fixed-top");
       navOffset = $('.navbar').height();
-      zoom = 14;
+      zoom = 15;
     }
 
     function init_map(){
@@ -324,7 +318,7 @@ javascript:
         scrollwheel: false,
         draggable: false,
         streetViewControl: false,
-        center:new google.maps.LatLng(53.194819, 50.125343),
+        center:new google.maps.LatLng(53.1945, 50.150702000000024),
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       map = new google.maps.Map(document.getElementById("section_map"), options);
@@ -332,24 +326,13 @@ javascript:
         map: map,
         position: new google.maps.LatLng(53.1945, 50.150702000000024)
       });
-      marker2 = new google.maps.Marker({
-        map: map,
-        position: new google.maps.LatLng(53.194077, 50.092174)
-      });
       infowindow1 = new google.maps.InfoWindow({
         content: "<b>CrossFit SMR</b><br/>Дачная 20"
-      });
-      infowindow2 = new google.maps.InfoWindow({
-        content: "<b>CrossFit SMR</b><br/>Куйбышева 126А"
       });
       google.maps.event.addListener(marker1, "click", function(){
         infowindow1.open(map1, marker1);
       });
-      google.maps.event.addListener(marker2, "click", function(){
-        infowindow2.open(map2, marker2);
-      });
       infowindow1.open(map, marker1);
-      infowindow2.open(map, marker2);
     }
     google.maps.event.addDomListener(window, 'load', init_map);
 

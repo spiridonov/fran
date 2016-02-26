@@ -30,6 +30,11 @@
           = f.number_field :cap, class: "form-control"
 
       .form-group
+        = f.label :color, "Цвет", class: "col-sm-2"
+        .col-sm-2
+          = f.select :cap, color_collection, {include_blank: false}, {class: "form-control"}
+
+      .form-group
         = f.label :description, "Описание", class: "col-sm-2"
         .col-sm-5
           = f.text_field :description, class: "form-control"

@@ -20,24 +20,42 @@ nav
         span< aria-hidden="true" &rarr;
 
 - Box.all.each do |box|
-  hr
-  h3
-    => box.name
-    small = box.address
-  br
-  .row
-    - (1..7).to_a.each do |d|
-      - date = @week.start_date + (d - 1).day
-      .col-md-1
-        p class=(Date.today == date ? 'danger' : '')
-          strong = week_day(d)
-          =< date.strftime("%d/%m")
-        - @week.workouts_for(box, d).each do |workout|
-          - btn_class = workout.users.include?(current_user) ? 'btn-success' : 'btn-default'
-          = link_to workout_path(workout), class: "btn #{btn_class} btn-block" do
-            => workout.datetime.strftime("%H:%M")
-            span class="badge" = workout.users.size
-          br
+  - if box.enabled
+    hr
+    h3
+      => box.name
+      small = box.address
+    br
+    .row
+      - (1..7).to_a.each do |d|
+        - date = @week.start_date + (d - 1).day
+        .col-md-1
+          - if Date.today == date
+            p
+              mark
+                strong = week_day(d)
+                =< date.strftime("%d/%m")
+          - else
+            p
+              strong = week_day(d)
+              =< date.strftime("%d/%m")
+          - @week.workouts_for(box, d).each do |workout|
+            - if workout.present?
+              - btn_class = workout_color_class(workout.color)
+              - if workout.users.include?(current_user)
+                = link_to workout_path(workout), class: "btn #{btn_class} active btn-block" do
+                  span> = workout.datetime.strftime("%H:%M")
+                  span class="glyphicon glyphicon-ok"
+              - else
+                = link_to workout_path(workout), class: "btn #{btn_class} btn-block" do
+                  span> = workout.datetime.strftime("%H:%M")
+                  span class="badge" = workout.users.size
+              br
+            - else
+              .hidden-xs
+                = link_to "#", class: "btn disabled btn-block" do
+                  | &nbsp;
+                br
 
 .row
   br

@@ -33,10 +33,17 @@ nav
           strong = week_day(d)
           =< date.strftime("%d/%m")
         - @week.workouts_for(box, d).each do |workout|
-          = link_to admin_workout_path(workout), class: "btn btn-default btn-block" do
-            => workout.datetime.strftime("%H:%M")
-            span class="badge" = "#{workout.users.count}/#{workout.cap}"
-          br
+          - if workout.present?
+            - btn_class = workout_color_class(workout.color)
+            = link_to admin_workout_path(workout), class: "btn #{btn_class} btn-block" do
+              => workout.datetime.strftime("%H:%M")
+              span class="badge" = "#{workout.users.count}/#{workout.cap}"
+            br
+          - else
+            .hidden-xs
+              = link_to "#", class: "btn disabled btn-block" do
+                | &nbsp;
+              br
 
         - if WorkoutService.can_add_workout?(date)
           = link_to new_admin_workout_path(date: date, box_id: box.id), class: "btn btn-success btn-block" do

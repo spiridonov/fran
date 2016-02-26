@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       post :unban, on: :member
       get :banned, on: :collection
       get :lazy, on: :collection
+      get :users_report, on: :collection
+      get :workouts_report, on: :collection
     end
     resources :user_workouts, only: [:destroy, :create] do
       post :mark_as_visited, on: :member

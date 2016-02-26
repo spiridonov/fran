@@ -23,6 +23,11 @@
           = f.number_field :cap, class: "form-control"
 
       .form-group
+        = f.label :color, "Цвет", class: "col-sm-2"
+        .col-sm-2
+          = f.select :color, color_collection, {include_blank: false}, {class: "form-control"}
+
+      .form-group
         = f.label :program, "Программа", class: "col-sm-2"
         .col-sm-5
           = f.text_area :program, class: "form-control", 'data-provide' => 'markdown', 'data-language' => 'ru', 'rows' => '12'

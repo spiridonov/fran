@@ -17,6 +17,10 @@
           .form-group
             input<> type="text" class="form-control" placeholder="Поиск..." name='search' value=params[:search]
             button type='submit' class='btn btn-primary' Поиск
+        .navbar-right.navbar-form
+          .form-group
+            = link_to 'Атлеты CSV', users_report_admin_users_path(format: 'csv'), class: 'btn btn-link'
+            = link_to 'Тренировки CSV', workouts_report_admin_users_path(format: 'csv'), class: 'btn btn-link'
 
     - if @users.present?
       table class="table"

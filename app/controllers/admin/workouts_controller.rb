@@ -67,7 +67,7 @@ class Admin::WorkoutsController < Admin::BaseController
     params.
       require(:workout).
       permit(
-        :program, :description, :date, :hours, :mins, :box_id, :cap
+        :program, :description, :date, :hours, :mins, :box_id, :cap, :color
       )
   end
 

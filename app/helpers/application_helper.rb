@@ -81,7 +81,7 @@ module ApplicationHelper
         noparse: true,
         title: box.social_title,
         description: box.social_description,
-        image: URI.join(root_url, box.social_image.url)
+        # image: URI.join(root_url, box.social_image.url) 
       }
       link_to "Расскажу друзьям!", "http://vk.com/share.php?#{query.to_query}", 
         class: "btn btn-md btn-primary #{classes}", target: '_blank',
@@ -89,4 +89,33 @@ module ApplicationHelper
     end
   end
 
+  def workout_color_class(color)
+    case color
+    when 1
+      'btn-default'
+    when 2
+      'btn-success'
+    when 3
+      'btn-danger'
+    when 4
+      'btn-warning'
+    when 5
+      'btn-primary'
+    when 6
+      'btn-info'
+    else
+      'btn-default'
+    end
+  end
+
+  def color_collection
+    [
+      ['Серый', 1],
+      ['Зеленый', 2], 
+      ['Красный', 3],
+      ['Желтый', 4],
+      ['Синий', 5],
+      ['Голубой', 6]
+    ]
+  end
 end
