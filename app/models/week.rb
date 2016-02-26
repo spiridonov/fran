@@ -26,7 +26,7 @@ class Week
         by_day[k] = uniq_times.flat_map do |t| 
           r = v.select{ |w| w.datetime.strftime("%H:%M") == t }
           if r.present?
-            r + ([nil] * (doubles_per_day[t] - r.size))
+            ([nil] * (doubles_per_day[t] - r.size)) + r
           else
             [nil] * doubles_per_day[t]
           end
