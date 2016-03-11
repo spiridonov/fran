@@ -81,7 +81,7 @@ module ApplicationHelper
         noparse: true,
         title: box.social_title,
         description: box.social_description,
-        # image: URI.join(root_url, box.social_image.url) 
+        image: URI.join(root_url, box.social_image.url) 
       }
       link_to "Расскажу друзьям!", "http://vk.com/share.php?#{query.to_query}", 
         class: "btn btn-md btn-primary #{classes}", target: '_blank',
