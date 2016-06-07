@@ -2,21 +2,21 @@ module ApplicationHelper
 
   def vk_url_with_name(user)
     if user.vk_id.present?
-      url = "http://vk.com/id#{user.vk_id}"
+      url = vk_url(user)
       link_to user.name, url, target: '_blank'
     end
   end
 
   def fb_url_with_name(user)
     if user.fb_id.present?
-      url = "https://www.facebook.com/app_scoped_user_id/#{user.fb_id}"
+      url = fb_url(user)
       link_to user.name, url, target: '_blank'
     end
   end
 
-  def vk_url(user)
+  def vk_link(user)
     if user.vk_id.present?
-      url = "http://vk.com/id#{user.vk_id}"
+      url = vk_url(user)
       link_to url, target: '_blank' do
         concat "VK "
         concat tag(:span, class: "glyphicon glyphicon-share-alt")
@@ -24,9 +24,17 @@ module ApplicationHelper
     end
   end
 
+  def vk_url(user)
+    "http://vk.com/id#{user.vk_id}"
+  end
+
   def fb_url(user)
+    "https://www.facebook.com/app_scoped_user_id/#{user.fb_id}"
+  end  
+
+  def fb_link(user)
     if user.fb_id.present?
-      url = "https://www.facebook.com/app_scoped_user_id/#{user.fb_id}"
+      url = fb_url(user)
       link_to url, target: '_blank' do
         concat "Facebook "
         concat tag(:span, class: "glyphicon glyphicon-share-alt")
@@ -47,6 +55,14 @@ module ApplicationHelper
       vk_url(user)
     else
       fb_url(user)
+    end
+  end  
+
+  def social_link(user)
+    if user.vk_id.present?
+      vk_link(user)
+    else
+      fb_link(user)
     end
   end  
 

@@ -40,7 +40,7 @@
               td
                 => image_tag user_photos.for(user, :small), size: '50x50', class: 'img-circle'
                 => link_to user.name, admin_user_path(user)
-              td = social_url(user)
+              td = social_link(user)
 
       hr
     - else

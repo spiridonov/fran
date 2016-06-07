@@ -1,7 +1,6 @@
 require 'csv'
 
 class Admin::UsersController < Admin::BaseController
-
   # before_filter :require_admin!
 
   def index
@@ -20,7 +19,7 @@ class Admin::UsersController < Admin::BaseController
   def users_report
     csv_string = CSV.generate do |csv|
       User.where(banned: false).all.each do |user|
-        csv << [user.id, user.name]
+        csv << [user.id, user.name, view_context.social_url(user)]
       end
     end
     

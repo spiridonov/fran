@@ -37,7 +37,7 @@
                   = "#{(Time.zone.now.to_date - last.to_date).to_i} дн. назад"
                 - else
                   | –
-              td = social_url(user)
+              td = social_link(user)
       hr
     - else
       br

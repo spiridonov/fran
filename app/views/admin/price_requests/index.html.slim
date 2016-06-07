@@ -7,6 +7,7 @@
       thead
         th Имя
         th Телефон
+        th Дата
         th
 
       tbody
@@ -14,6 +15,9 @@
           tr
             td = price_request.name
             td = price_request.phone
+            td 
+              - if price_request.created_at.present?
+                = l price_request.created_at, format: '%d.%m.%Y %H:%M'
             td.pull-right
               - if !price_request.closed
                 = link_to 'Закрыть', close_admin_price_request_path(price_request), class: 'btn btn-success btn-sm', method: :post
